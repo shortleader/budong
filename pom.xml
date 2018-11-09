@@ -141,12 +141,9 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.0.0</version>
-				<configuration>
-					<warSourceDirectory>/budong-info/out/artifacts/budong_war_exploded</warSourceDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
-		<finalName></finalName>
+		<finalName>budong</finalName>
 	</build>
 	<packaging>war</packaging>
 </project>
