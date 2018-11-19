@@ -5,8 +5,12 @@
 		<excludeFolder url="file://$MODULE_DIR$/target"/>
 	</contentEntry>
 	<lib name="Tomcat 9.0.121" scope="PROVIDED"/>
+	<lib name="Maven: javax.servlet:javax.servlet-api:3.0.1" scope="PROVIDED"/>
+	<lib name="Maven: org.apache.tomcat:tomcat-servlet-api:9.0.12" scope="PROVIDED"/>
 	<levels>
 		<level name="Tomcat 9.0.121" value="application_server_libraries"/>
+		<level name="Maven: javax.servlet:javax.servlet-api:3.0.1" value="project"/>
+		<level name="Maven: org.apache.tomcat:tomcat-servlet-api:9.0.12" value="project"/>
 		<level name="Maven: org.springframework:spring-context:4.3.18.RELEASE" value="project"/>
 		<level name="Maven: org.springframework:spring-beans:4.3.18.RELEASE" value="project"/>
 		<level name="Maven: org.springframework:spring-core:4.3.18.RELEASE" value="project"/>

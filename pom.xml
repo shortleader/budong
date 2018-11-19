@@ -18,6 +18,22 @@
 	</properties>
 
 	<dependencies>
+        <!-- java servlet api provided -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- tomcat servlet api provided -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>9.0.12</version>
+            <scope>provided</scope>
+        </dependency>
+        
 		<!-- Spring core -->
 		<dependency>
 			<groupId>org.springframework</groupId>
