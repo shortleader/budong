@@ -11,6 +11,7 @@
 <title></title>
 </head>
 <body>
-    메롱메롱
+    메롱메롱 
+    <a href="test/realState.do">이동</a>
 </body>
 </html>

@@ -15,6 +15,7 @@ public class MainServiceImpl implements MainService {
         this.memberDAO = memberDAO;
     }
 
+    @Override
     public boolean login(String id, String password) {
         return memberDAO.login(new MemberDTO(id, password)) != null;
     }
