@@ -18,12 +18,8 @@ public class TestServiceClass {
 		this.realEasteDealInfoDAO = realEasteDealInfoDAO;
 	}
 
-
-
 	public Vector<RealEstateAPTDealInfoDTO> listAPTDeal(String lawd_cd, int deal_ymd) {
 		return realEasteDealInfoDAO.getAPTDealInfo(1, lawd_cd, deal_ymd);
 	}
-	
-	
 	
 }

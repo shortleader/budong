@@ -19,6 +19,7 @@ public class MemberDAOImpl implements MemberDAO {
         this.mybatis = mybatis;
     }
 
+    @Override
     public MemberDTO login(MemberDTO dto) {
         return mybatis.selectOne("com.budong.model.interfaces.MemberDAO.login", dto);
     }

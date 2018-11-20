@@ -68,7 +68,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		
 		return nValue.getNodeValue();
 	}
-	
+
 	@Override
 	public Vector<RealEstateAPTDealInfoDTO> getAPTDealInfo(int pageNo, String lawd_cd, int deal_ymd) {
 		this.pageNo = pageNo;
@@ -95,7 +95,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 				
 				// item 뽑기
 				NodeList nList = doc.getElementsByTagName("item");
-				log.info("nList : " + nList.getLength());
+				log.debug("nList : " + nList.getLength());
 				for(int i=0; i<nList.getLength(); i++) {
 					Node node = nList.item(i);
 					
@@ -121,8 +121,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 				
 			}	// while end
 		} catch (Exception e) {
-			System.err.println("파싱 에러  : " + e.getMessage());
-			e.printStackTrace();
+			log.error("파싱 에러  : " + e.getMessage());
 		}	// try end
 		
 		return dataSet;
@@ -154,7 +153,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		String resultCode = getTagValue("resultCode", (Element)resultNode);
 
 		if(!resultCode.equals("00")) {
-			System.err.println(getTagValue("resultMsg", (Element)resultNode));
+			log.debug(getTagValue("resultMsg", (Element)resultNode));
 			return false;
 		}
 		

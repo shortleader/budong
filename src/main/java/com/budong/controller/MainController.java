@@ -15,7 +15,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String goToIndexPage() {
-        log.info("path has [/] reached");
+        log.info("path [/] status ok");
         return "index";
     }
 }
