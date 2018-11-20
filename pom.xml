@@ -171,4 +171,5 @@
 		<finalName>budong</finalName>
 	</build>
 	<packaging>war</packaging>
+    <!-- git 수정 -->
 </project>
