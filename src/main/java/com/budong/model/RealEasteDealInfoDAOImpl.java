@@ -1,11 +1,10 @@
 package com.budong.model;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.budong.model.dto.RealEstateAPTDealInfoDTO;
 import com.budong.model.interfaces.RealEsateDealInfoDAO;
@@ -70,7 +68,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 	}
 
 	@Override
-	public Vector<RealEstateAPTDealInfoDTO> getAPTDealInfo(int pageNo, String lawd_cd, int deal_ymd) {
+	public List<RealEstateAPTDealInfoDTO> getAPTDealInfo(int pageNo, String lawd_cd, int deal_ymd) {
 		this.pageNo = pageNo;
 		this.lawd_cd = lawd_cd;
 		this.deal_ymd = deal_ymd;
@@ -126,7 +124,8 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		
 		return dataSet;
 	}
-	
+
+	@Override
 	public void getAPTDealURL() {
 		url =	"http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade?"
 				+ "LAWD_CD=" + lawd_cd
@@ -138,7 +137,8 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		if(lawd_cd != null) url += "&LAWD_CD=11110" + lawd_cd;
 		if(deal_ymd != 0) url += "&DEAL_YMD=201512" + deal_ymd;
 	}
-	
+
+	@Override
 	public int getTotalCount() {
 		NodeList resultNodeList = doc.getElementsByTagName("body");
 		Node resultNode = resultNodeList.item(0);
@@ -146,7 +146,8 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		
 		return totalCount;
 	}
-	
+
+	@Override
 	public boolean checkErr() {
 		NodeList resultNodeList = doc.getElementsByTagName("header");
 		Node resultNode = resultNodeList.item(0);

@@ -15,7 +15,7 @@ import com.budong.model.dto.RealEstateAPTDealInfoDTO;
 import com.budong.service.TestServiceClass;
 
 @Controller
-@RequestMapping(value="/test")
+@RequestMapping("/test")
 public class TestController {
 	private static final Logger log = LoggerFactory.getLogger(TestController.class);
 
@@ -23,13 +23,13 @@ public class TestController {
 	private TestServiceClass testServiceClass;
 	
 	
-	@RequestMapping(value="/realState.do")
+	@RequestMapping("/realState.do")
 	public String index(HttpServletRequest req) {
 		log.info("path [/test/realState.do] status ok");
 		return "test/RealState";
 	}
 	
-	@RequestMapping(value="/apt_dealInfo.do")
+	@RequestMapping("/apt_dealInfo.do")
 	public String listInfo(HttpServletRequest req) {
 
 		String str_dealYmd = req.getParameter("deal_ymd");

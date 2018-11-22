@@ -9,12 +9,12 @@
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
-		<com.oracle-version>11.2.0</com.oracle-version>
-		<org.mybatis-version>3.4.6</org.mybatis-version>
-		<org.mybatis.spring-version>1.3.1</org.mybatis.spring-version>
-		<org.springframework-version>4.3.18.RELEASE</org.springframework-version>
-		<slf4j-version>1.7.25</slf4j-version>
-		<log4j-version>2.10.0</log4j-version>
+        <slf4j-version>1.7.25</slf4j-version>
+        <log4j-version>2.10.0</log4j-version>
+        <com.oracle-version>11.2.0</com.oracle-version>
+        <org.mybatis-version>3.4.6</org.mybatis-version>
+        <org.mybatis.spring-version>1.3.1</org.mybatis.spring-version>
+        <org.springframework-version>4.3.18.RELEASE</org.springframework-version>
 	</properties>
 
 	<dependencies>
