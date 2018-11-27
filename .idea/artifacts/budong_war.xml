@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="budong:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="budong.war">
-      <element id="artifact" artifact-name="budong:war exploded" />
-    </root>
-  </artifact>
-</component>

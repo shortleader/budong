@@ -1,5 +1,6 @@
 package com.budong.service;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class TestServiceClass {
 		this.realEasteDealInfoDAO = realEasteDealInfoDAO;
 	}
 
-	public Vector<RealEstateAPTDealInfoDTO> listAPTDeal(String lawd_cd, int deal_ymd) {
+	public List<RealEstateAPTDealInfoDTO> listAPTDeal(String lawd_cd, int deal_ymd) {
 		return realEasteDealInfoDAO.getAPTDealInfo(1, lawd_cd, deal_ymd);
 	}
 	
