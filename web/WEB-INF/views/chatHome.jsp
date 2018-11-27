@@ -13,7 +13,7 @@
 <link href='<c:url value="/resources/css/chat.css" />' rel="stylesheet">
 <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
-	function setChatImg() {
+	function setMyChatImg() {
 		document.head.innerHTML = document.head.innerHTML
 				+ '<style> .messages li.other:before { right: -45px; background-image: url(/budong-info/resources/images/${userImg});} </style>'
 	}
@@ -28,9 +28,10 @@
 			if (session.getAttribute("userId") != null) {
 		%>
 		<input type="button" value="로그아웃" onClick="location.href='logout.do'" />
-		<c:set var="userImg" value="${userImg}" /> 
+		<c:set var="userId" value="${userId}" />
+		<c:set var="userImg" value="${userImg}" />
 		<script>
-			setChatImg();
+			setMyChatImg();
 		</script>
 		<%
 			} else {
@@ -40,6 +41,26 @@
 		<%
 			}
 		%>
+	</div>
+
+	<div class="floating-chat-test">
+		<i class="fa fa-comments" aria-hidden="true"></i>
+		<div class="chat">
+			<div class="header">
+				<span class="title"> Budong Chat</span>
+				<button>
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+			</div>
+			<ul class="messages">
+
+			</ul>
+			<div class="footer">
+				<div class="text-box" contenteditable="true" class="single-line"
+					disabled="true"></div>
+				<button id="sendMessage">send</button>
+			</div>
+		</div>
 	</div>
 
 	<div class="floating-chat">
@@ -62,9 +83,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		/* var textarea = document.getElementById("messageWindow"); */
 		var webSocket = new WebSocket('ws://localhost:8080/chat/chatting');
-		/* var inputMessage = document.getElementById('inputMessage'); */
 		webSocket.onerror = function(event) {
 			onError(event)
 		};
@@ -77,28 +96,32 @@
 			onMessage(event)
 		};
 
+		//상대방에게서 메시지 받음 
 		function onMessage(event) {
-			/* textarea.value += "상대 : " + event.data + "\n"; */
+			console.log(event.data);
 
-			/* 	var userInput = $('.text-box');
-				var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig,
-						'\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g,
-						'<br>');
-
-				if (!newMessage)
-					return; */
-
+			//JSON 받아서 파싱 
+			var msg = JSON.parse(event.data);
+			var img = "/budong-info/resources/images/" + msg.img;
 			var messagesContainer = $('.messages');
 
-			messagesContainer
-					.append([ '<li class="self">', event.data, '</li>' ]
-							.join(''));
+			messagesContainer.append([ '<li class="self">', msg.text,
+					' <br> <span class="timestamp"> 10:27 PM </span> </li>' ]
+					.join(''));
 
 			messagesContainer.finish().animate({
 				scrollTop : messagesContainer.prop("scrollHeight")
 			}, 250);
+
+			setOtherChatImg(img);
 		}
 
+		function setOtherChatImg(img) {
+			//상대방 메시지 사진 설정  
+			console.log(img);
+			$('.messages li.self:before').attr('style',
+					'background-image: url("' + img + '")');
+		}
 		function onOpen(event) {
 		}
 
@@ -106,6 +129,7 @@
 			alert(event.data);
 		}
 
+		//메시지 전송 
 		function send() {
 			var userInput = $('.text-box');
 			var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig,
@@ -120,6 +144,14 @@
 			messagesContainer.append([ '<li class="other">', newMessage,
 					'</li>' ].join(''));
 
+			//아이디, 프로필이미지, 채팅내용을 JSON에 넣음 			
+			var msg = {
+				id : "${userId}",
+				img : "${userImg}",
+				text : newMessage,
+				date : Date.now()
+			}
+
 			// clean out old message
 			userInput.html('');
 			// focus on input
@@ -129,26 +161,23 @@
 				scrollTop : messagesContainer.prop("scrollHeight")
 			}, 250);
 
-			/* textarea.value += "나 : " + inputMessage.value + "\n"; */
-			webSocket.send(newMessage);
+			webSocket.send(JSON.stringify(msg));
 			userInput.value = "";
 		}
 	</script>
 
 	<script>
 		var element = $('.floating-chat');
-		var myStorage = localStorage;
-
-		if (!myStorage.getItem('chatID')) {
-			myStorage.setItem('chatID', createUUID());
-		}
+		var element2 = $('.floating-chat');
 
 		setTimeout(function() {
 			element.addClass('enter');
+			element2.addClass('enter');
 		}, 1000);
 
 		element.click(openElement);
-
+		element2.click(openElement);
+		
 		function openElement() {
 			var messages = element.find('.messages');
 			var textInput = element.find('.text-box');
@@ -180,7 +209,6 @@
 			}, 500);
 		}
 
-		
 		function sendNewMessage() {
 			var userInput = $('.text-box');
 			var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig,
@@ -206,8 +234,8 @@
 		}
 
 		function onMetaAndEnter(event) {
-			if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
-				sendNewMessage();
+			if (event.keyCode == 13) {
+				send();
 			}
 		}
 	</script>
