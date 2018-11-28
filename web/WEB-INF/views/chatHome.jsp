@@ -11,18 +11,35 @@
 	href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
 	rel="stylesheet" type='text/css'>
 <link href='<c:url value="/resources/css/chat.css" />' rel="stylesheet">
-<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
 <script>
 	function setMyChatImg() {
 		document.head.innerHTML = document.head.innerHTML
 				+ '<style> .messages li.other:before { right: -45px; background-image: url(/budong-info/resources/images/${userImg});} </style>'
 	}
+
+	$(function() {
+
+		$("#dialog").dialog({
+			autoOpen : false,
+			modal : true
+		});
+
+		$("#loginBtn").on("click", function(e) {
+			e.preventDefault();
+			$("#dialog").dialog("open");
+		});
+
+	});
 </script>
 </head>
 <body>
 
 	<div>
-		<input type="button" value="회원가입"
+		<input type="button" value="회원가입" id="joinBtn"
 			onClick="location.href='memberJoin.do'" />
 		<%
 			if (session.getAttribute("userId") != null) {
@@ -30,32 +47,25 @@
 		<input type="button" value="로그아웃" onClick="location.href='logout.do'" />
 		<c:set var="userId" value="${userId}" />
 		<c:set var="userImg" value="${userImg}" />
-		<script>
-			setMyChatImg();
-		</script>
-		<%
-			} else {
-		%>
-		<input type="button" value="로그인"
-			onClick="location.href='loginHome.do'" />
-		<%
-			}
-		%>
-	</div>
-	<a href="testChat.do">테스트</a>
-	<div class="floating-chat">
-		<i class="fa fa-comments" aria-hidden="true"></i>
-		<div class="chat">
-			<div class="header">
-				<span class="title"> Budong Chat</span>
-				<button>
-					<i class="fa fa-times" aria-hidden="true"></i>
-				</button>
-			</div>
-			<!-- 	<ul class="messages"> -->
-			<ul class="chat-history">
-				<!--내 메시지  -->
-				<li class="clearfix">
+
+		<!--로그인 팝업 모달  -->
+		<div class="modal">this is a modal pop up</div>
+
+		<!-- 채팅 버튼  -->
+		<div class="floating-chat">
+			<i class="fa fa-comments" aria-hidden="true"></i>
+			<div class="chat">
+				<!-- 채팅 헤더  -->
+				<div class="header">
+					<span class="title"> Budong Chat</span>
+					<button>
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</button>
+				</div>
+				<!-- 	<ul class="messages"> -->
+				<!-- 채팅 내용  -->
+				<ul class="chat-history">
+					<!-- 				<li class="clearfix">
 					<div class="message-data align-right">
 						<span class="message-data-time"> 10:27 PM</span> &nbsp; &nbsp; <span
 							class="message-data-name"> Gildong</span>
@@ -64,7 +74,6 @@
 					<div class="message my-message float-right">Message Test...</div>
 				</li>
 
-				<!--상대방 메시지  -->
 				<li>
 					<div class="message-data">
 						<span class="message-data-name"> Vincent</span> <span
@@ -72,16 +81,43 @@
 					</div>
 					<div class="message other-message">Are we meeting today?
 						Project has been already finished and I have results to show you.</div>
-				</li>
+				</li> -->
 
-			</ul>
-			<div class="footer">
-				<div class="text-box" contenteditable="true" class="single-line"
-					disabled="true"></div>
-				<button id="sendMessage">send</button>
+				</ul>
+				<!--메시지 전송 부분  -->
+				<div class="footer clearfix">
+					<div class="text-box" contenteditable="true" class="single-line"
+						disabled="true"></div>
+					<button id="sendMessage">send</button>
+				</div>
 			</div>
 		</div>
+		<%
+			} else {
+		%>
+		<input type="button" value="로그인" id="loginBtn" />
+
+		<!--로그인창 팝업 -->
+		
+		<!-- <form class="login-form" method="post" action="login.do">
+			<input type="text" class="input" id="mem_id" name="mem_id"
+				autocomplete="off" placeholder="Username"> <input
+				type="password" class="input" name="mem_pw" id="mem_pw"
+				autocomplete="off" placeholder="Password"> <input
+				type="checkbox" class="checkbox" checked id="remember_me"> <label
+				for="remember_me">Remember me</label> <input type="submit"
+				class="button" value="Login" onclick="javascript:test()">
+		</form> -->
+		
+		<div id="dialog">
+			<c:import url="/loginHome.do" charEncoding="UTF-8" />
+		</div>
+
+		<%
+			}
+		%>
 	</div>
+
 	<script type="text/javascript">
 		var webSocket = new WebSocket('ws://localhost:8080/chat/chatting');
 		webSocket.onerror = function(event) {
