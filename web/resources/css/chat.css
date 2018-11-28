@@ -1,5 +1,5 @@
 @charset "EUC-KR";
-<style>
+
 * {
 	box-sizing: border-box;
 }
@@ -20,30 +20,12 @@ body {
 	right: 20px;
 	width: 70px;
 	height: 70px;
-	background-color: rgba(0, 0, 0, 15);
+	background-color: #F2F5F8;
 	transform: translateY(180px);
 	transition: all 250ms ease-out;
 	border-radius: 50%;
-}
-
-.floating-chat-test {
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: white;
-	position: fixed;
-	bottom: 200px;
-	right: 200px;
-	width: 70px;
-	height: 70px;
-	background-color: rgba(255, 192, 203, 15);
 	transform: translateY(180px);
-	transition: all 250ms ease-out;
-	border-radius: 50%;
 }
-
-
 
 .enter {
 	transform: translateY(0);
@@ -70,14 +52,15 @@ button {
 	background: transparent;
 	border: 0;
 	width: 5%;
-	color: white;
+	color: #545252;
 	text-transform: uppercase;
 	border-radius: 3px;
 	cursor: pointer;
+	margin-bottom: 3px;
 }
 
 .chat {
-	background-color: rgba(0, 0, 0, 15);
+	background-color: #F2F5F8;
 	display: flex;
 	flex-direction: column;
 	position: absolute;
@@ -105,13 +88,14 @@ button {
 	flex-shrink: 0;
 	padding-bottom: 10px;
 	display: flex;
-	background: transparent;
+	background-color: #F2F5F8;
 }
 
 .header .title {
 	flex-grow: 1;
 	flex-shrink: 1;
 	padding: 0 5px;
+	color:#545252;
 }
 
 .header button {
@@ -133,10 +117,85 @@ button {
 }
 
 .timestamp {
-	font-size: 10px; 
+	font-size: 10px;
 	color: gray;
 }
 
+/* д©╫╨ер  */
+.chat-history {
+	background-color: #F2F5F8;
+	padding: 30px 30px 20px;
+	border-bottom: 2px solid white;
+	overflow-y: scroll;
+	height: 575px;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.message-data {
+	margin-bottom: 11px;
+}
+
+.message-data-time {
+	font-size: 10px;
+	color: gray;
+	padding-left: 6px;
+}
+
+.message-data-name {
+	font-size: 10px;
+	color: #545252;
+	padding-left: 6px;
+	font-weight: bold;
+	}
+
+.align-right {
+	text-align: right;
+}
+
+.align-left {
+	text-align: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+.message {
+	color: white;
+	padding: 10px 15px;
+	line-height: 20px;
+	font-size: 12px;
+	border-radius: 7px;
+	margin-bottom: 18px;
+	width: 90%;
+	position: relative;
+}
+
+.my-message {
+	background: #86BB71;
+}
+
+.other-message {
+	background: #94C2ED;
+}
+
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+
+/*****************  */
 .messages {
 	padding: 10px;
 	margin: 0;
@@ -177,7 +236,7 @@ button {
 	content: '';
 	width: 0;
 	height: 0;
-	border-top: $chat-thread-msg-arrow-size solid $chat-thread-bgd-color;
+	border-top: $chat-thread-msg-arrow-size solid$chat-thread-bgd-color;
 }
 
 .messages li.other {
@@ -205,8 +264,7 @@ button {
 
 .messages li.self:before {
 	left: -45px;
-	
-} 
+}
 
 .messages li.self:after {
 	border-left: 10px solid transparent;
@@ -215,12 +273,13 @@ button {
 
 }
 .footer {
+	background-color: #F2F5F8;
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row-reverse;
 	padding-top: 10px;
 	max-height: 90px;
-	background: transparent;
+	flex-shrink: 0;
 }
 
 .footer .text-box {
@@ -230,78 +289,246 @@ button {
 	width: 80%;
 	margin-right: 5px;
 	color: #0EC879;
-	padding: 2px 5px; 
-	line-height: 20px; 
-	height: 20px;  
+	padding: 2px 5px;
+	line-height: 20px;
+	height: 20px;
 	display: inline-block;
-	font-size: 14px; 
+	font-size: 14px;
 }
 
 [contenteditable="true"].single-line {
-        white-space: nowrap;
-        width:95%;
-        overflow: hidden;
-} 
+	white-space: nowrap;
+	width: 95%;
+	overflow: hidden;
+}
+
 [contenteditable="true"].single-line br {
-    display:none;
-    
+	display: none;
 }
+
 [contenteditable="true"].single-line * {
-    display:inline;
-    white-space:nowrap;
+	display: inline;
+	white-space: nowrap;
 }
 
-@keyframes show-chat-even {
-    0% {
-        margin-left: -480px;
-    }
-    100% {
-        margin-left: 0;
-    }
+@
+keyframes show-chat-even { 0% {
+	margin-left: -480px;
 }
 
-@-moz-keyframes show-chat-even {
-    0% {
-        margin-left: -480px;
-    }
-    100% {
-        margin-left: 0;
-    }
+100%
+{
+margin-left
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+0;
+}
+}
+@
+-moz-keyframes show-chat-even { 0% {
+	margin-left: -480px;
 }
 
-@-webkit-keyframes show-chat-even {
-    0% {
-        margin-left: -480px;
-    }
-    100% {
-        margin-left: 0;
-    }
+100%
+{
+margin-left
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+0;
+}
+}
+@
+-webkit-keyframes show-chat-even { 0% {
+	margin-left: -480px;
 }
 
-@keyframes show-chat-odd {
-    0% {
-        margin-right: -480px;
-    }
-    100% {
-        margin-right: 0;
-    }
+100%
+{
+margin-left
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+0;
+}
+}
+@
+keyframes show-chat-odd { 0% {
+	margin-right: -480px;
 }
 
-@-moz-keyframes show-chat-odd {
-    0% {
-        margin-right: -480px;
-    }
-    100% {
-        margin-right: 0;
-    }
+100%
+{
+margin-right
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+0;
+}
+}
+@
+-moz-keyframes show-chat-odd { 0% {
+	margin-right: -480px;
 }
 
-@-webkit-keyframes show-chat-odd {
-    0% {
-        margin-right: -480px;
-    }
-    100% {
-        margin-right: 0;
-    }
+100%
+{
+margin-right
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+0;
 }
-</style>
+}
+@
+-webkit-keyframes show-chat-odd { 0% {
+	margin-right: -480px;
+}
+100%
+{
+margin-right
+
+
+
+
+
+
+
+
+
+
+
+
+:
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+0;
+}
+}

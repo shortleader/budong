@@ -42,27 +42,7 @@
 			}
 		%>
 	</div>
-
-	<div class="floating-chat-test">
-		<i class="fa fa-comments" aria-hidden="true"></i>
-		<div class="chat">
-			<div class="header">
-				<span class="title"> Budong Chat</span>
-				<button>
-					<i class="fa fa-times" aria-hidden="true"></i>
-				</button>
-			</div>
-			<ul class="messages">
-
-			</ul>
-			<div class="footer">
-				<div class="text-box" contenteditable="true" class="single-line"
-					disabled="true"></div>
-				<button id="sendMessage">send</button>
-			</div>
-		</div>
-	</div>
-
+	<a href="testChat.do">테스트</a>
 	<div class="floating-chat">
 		<i class="fa fa-comments" aria-hidden="true"></i>
 		<div class="chat">
@@ -72,7 +52,27 @@
 					<i class="fa fa-times" aria-hidden="true"></i>
 				</button>
 			</div>
-			<ul class="messages">
+			<!-- 	<ul class="messages"> -->
+			<ul class="chat-history">
+				<!--내 메시지  -->
+				<li class="clearfix">
+					<div class="message-data align-right">
+						<span class="message-data-time"> 10:27 PM</span> &nbsp; &nbsp; <span
+							class="message-data-name"> Gildong</span>
+					</div>
+
+					<div class="message my-message float-right">Message Test...</div>
+				</li>
+
+				<!--상대방 메시지  -->
+				<li>
+					<div class="message-data">
+						<span class="message-data-name"> Vincent</span> <span
+							class="message-data-time">10:12 AM, Today</span>
+					</div>
+					<div class="message other-message">Are we meeting today?
+						Project has been already finished and I have results to show you.</div>
+				</li>
 
 			</ul>
 			<div class="footer">
@@ -102,26 +102,31 @@
 
 			//JSON 받아서 파싱 
 			var msg = JSON.parse(event.data);
-			var img = "/budong-info/resources/images/" + msg.img;
-			var messagesContainer = $('.messages');
+			/* 	var img = "/budong-info/resources/images/" + msg.img; */
+			var messagesContainer = $('.chat-history');
 
-			messagesContainer.append([ '<li class="self">', msg.text,
-					' <br> <span class="timestamp"> 10:27 PM </span> </li>' ]
-					.join(''));
+			messagesContainer
+					.append([
+							'<li> <div class="message-data"> <span class="message-data-name">',
+							msg.id,
+							'</span> <span class="message-data-time">',
+							msg.date,
+							'</span> </div> <div class="message other-message">',
+							msg.text, '</div> </li>' ].join(''));
 
 			messagesContainer.finish().animate({
 				scrollTop : messagesContainer.prop("scrollHeight")
 			}, 250);
 
-			setOtherChatImg(img);
 		}
 
-		function setOtherChatImg(img) {
-			//상대방 메시지 사진 설정  
-			console.log(img);
-			$('.messages li.self:before').attr('style',
-					'background-image: url("' + img + '")');
-		}
+		/* 	function setOtherChatImg(img) {
+				//상대방 메시지 사진 설정  
+				console.log(img);
+				$('.messages li.self:before').attr('style',
+						'background-image: url("' + img + '")');
+			} */
+
 		function onOpen(event) {
 		}
 
@@ -139,18 +144,25 @@
 			if (!newMessage)
 				return;
 
-			var messagesContainer = $('.messages');
-
-			messagesContainer.append([ '<li class="other">', newMessage,
-					'</li>' ].join(''));
+			var messagesContainer = $('.chat-history');
 
 			//아이디, 프로필이미지, 채팅내용을 JSON에 넣음 			
+			var d = new Date();
 			var msg = {
 				id : "${userId}",
 				img : "${userImg}",
 				text : newMessage,
-				date : Date.now()
+				date : d.toLocaleString()
 			}
+
+			messagesContainer
+					.append([
+							'<li class="clearfix"> <div class="message-data align-right"> <span class="message-data-time">',
+							msg.date,
+							'</span>  &nbsp; <span class="message-data-name">',
+							msg.id,
+							'</span> </div> <div class="message my-message float-right">',
+							msg.text, '</div> </li>' ].join(''));
 
 			// clean out old message
 			userInput.html('');
@@ -168,16 +180,14 @@
 
 	<script>
 		var element = $('.floating-chat');
-		var element2 = $('.floating-chat');
+		var myStorage = localStorage;
 
 		setTimeout(function() {
 			element.addClass('enter');
-			element2.addClass('enter');
 		}, 1000);
 
 		element.click(openElement);
-		element2.click(openElement);
-		
+
 		function openElement() {
 			var messages = element.find('.messages');
 			var textInput = element.find('.text-box');
@@ -207,30 +217,6 @@
 				element.find('.chat').removeClass('chat-enter').show()
 				element.click(openElement);
 			}, 500);
-		}
-
-		function sendNewMessage() {
-			var userInput = $('.text-box');
-			var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig,
-					'\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g,
-					'<br>');
-
-			if (!newMessage)
-				return;
-
-			var messagesContainer = $('.messages');
-
-			messagesContainer.append([ '<li class="other">', newMessage,
-					'</li>' ].join(''));
-
-			// clean out old message
-			userInput.html('');
-			// focus on input
-			userInput.focus();
-
-			messagesContainer.finish().animate({
-				scrollTop : messagesContainer.prop("scrollHeight")
-			}, 250);
 		}
 
 		function onMetaAndEnter(event) {
