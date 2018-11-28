@@ -38,9 +38,7 @@
 </head>
 <body>
 
-	<div>
-		<input type="button" value="회원가입" id="joinBtn"
-			onClick="location.href='memberJoin.do'" />
+	<div align="center">
 		<%
 			if (session.getAttribute("userId") != null) {
 		%>
@@ -97,18 +95,7 @@
 		%>
 		<input type="button" value="로그인" id="loginBtn" />
 
-		<!--로그인창 팝업 -->
-		
-		<!-- <form class="login-form" method="post" action="login.do">
-			<input type="text" class="input" id="mem_id" name="mem_id"
-				autocomplete="off" placeholder="Username"> <input
-				type="password" class="input" name="mem_pw" id="mem_pw"
-				autocomplete="off" placeholder="Password"> <input
-				type="checkbox" class="checkbox" checked id="remember_me"> <label
-				for="remember_me">Remember me</label> <input type="submit"
-				class="button" value="Login" onclick="javascript:test()">
-		</form> -->
-		
+		<!--로그인/회원가입 팝업 -->
 		<div id="dialog">
 			<c:import url="/loginHome.do" charEncoding="UTF-8" />
 		</div>

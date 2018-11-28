@@ -29,32 +29,26 @@ public class MemberController {
 	public MemberController(MainService service) {
 		this.service = service;
 	}
-
-	// 회원가입 페이지 이동
-	@RequestMapping("/memberJoin.do")
-	public String memberJoin() {
-		return "member/memberJoin";
-	}
-
+ 
 	// 회원 가입
 	@RequestMapping(value = "/insertMember.do", method = RequestMethod.POST)
 	public String insertMember(HttpServletRequest req) throws Exception {
-		MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
+		/*MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
 		MultipartFile mf = mr.getFile("mem_img");
-		String filename = mf.getOriginalFilename();
+		String filename = mf.getOriginalFilename();*/
 
 		HttpSession session = req.getSession();
-		String upPath = session.getServletContext().getRealPath("/resources/images");
+/*		String upPath = session.getServletContext().getRealPath("/resources/images");
 
 		File file = new File(upPath, filename);
 		mf.transferTo(file);
-
+*/
 		MemberDTO dto = new MemberDTO();
-		dto.setMem_id(mr.getParameter("mem_id"));
-		dto.setMem_img(filename);
-		dto.setMem_name(mr.getParameter("mem_name"));
-		dto.setMem_pw(mr.getParameter("mem_pw"));
-		dto.setMem_region(mr.getParameter("mem_region"));
+		dto.setMem_id(req.getParameter("mem_id"));
+		dto.setMem_img("");
+		dto.setMem_name(req.getParameter("mem_name"));
+		dto.setMem_pw(req.getParameter("mem_pw"));
+		dto.setMem_region(req.getParameter("mem_region"));
 
 		service.insertMember(dto);
 		return "redirect:chatHome.do";
@@ -71,6 +65,7 @@ public class MemberController {
 	public String login(@RequestParam("mem_id") String mem_id, @RequestParam("mem_pw") String mem_pw,
 			HttpServletRequest req) {
 
+		System.out.println("loginnnnnnnn");
 		HttpSession session = req.getSession();
 		MemberDTO memberDTO = service.login(mem_id, mem_pw);
 

@@ -100,3 +100,16 @@ $(function() {
 		return false;
 	});
 });
+
+//select box 
+$(function() {
+	$('#nights').click(function(){
+		$('#night_option').toggle();
+	});
+
+	$('.option').click(function(){
+		$('.select_text').html($(this).attr('id'));
+		$('#nightselect option[value='+$(this).attr('id')+']').prop('selected', true);
+		$('#night_option').toggle();
+	});
+});

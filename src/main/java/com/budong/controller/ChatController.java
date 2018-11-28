@@ -30,7 +30,12 @@ public class ChatController {
 		return "chatHome";
 	} 
 	
-	
+	@RequestMapping(value = "/testChat.do", method = RequestMethod.GET)
+	public String home2(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		
+		return "chatTest";
+	} 
 	
 	
 }

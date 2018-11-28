@@ -9,14 +9,16 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script
 	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-<link href='<c:url value="/resources/css/login.css" />' rel="stylesheet">
+<link href='<c:url value="/resources/css/login.css" />' rel="stylesheet"> 
+<script src="<c:url value="/resources/js/login.js" />"></script>
 <script>
-	function test() {
-		console.log($('#mem_id').val() + "," + $('#mem_pw').val());
+	function login() {
 		/* 	$("#dialog").dialog("close");  */
-
 		$("#myform").submit();
-		return true;
+	}
+	
+	function signup() {
+		$(".signup-form").submit(); 
 	}
 </script>
 </head>
@@ -232,28 +234,54 @@
 									type="password" class="input" name="mem_pw" id="mem_pw"
 									autocomplete="off" placeholder="Password"> <input
 									type="checkbox" class="checkbox" checked id="remember_me">
-								<label for="remember_me">Remember me</label> <input
+								<label for="remember_me">Remember me (아직안함)</label> <input
 									type="submit" class="button" value="Login"
-									onclick="javascript:test()">
+									onclick="javascript:login()">
 							</form>
 
 							<div class="help-action">
-								<p>
+								<p>	
 									<i class="fa fa-arrow-left" aria-hidden="true"></i><a
 										class="forgot" href="#">Forgot your password?</a>
 								</p>
 							</div>
 						</div>
-						<!-- TABS CONTENT SIGNUP -->
+
+						<!--회원가입 탭  -->
 						<div id="signup-tab-content">
-							<form class="signup-form" action="" method="post">
-								<input type="email" class="input" id="user_email"
-									autocomplete="off" placeholder="Email"> <input
-									type="text" class="input" id="user_name" autocomplete="off"
+							<form class="signup-form" action="insertMember.do" method="post">
+								<input type="text" class="input" id="user_email" name="mem_id"
+									autocomplete="off" placeholder="ID"> <input type="text"
+									class="input" id="user_name" name="mem_name" autocomplete="off"
 									placeholder="Username"> <input type="password"
-									class="input" id="user_pass" autocomplete="off"
-									placeholder="Password"> <input type="submit"
-									class="button" value="Sign Up">
+									class="input" id="user_pass" name="mem_pw" autocomplete="off"
+									placeholder="Password"> 
+									
+								<!--select box  -->
+								<div class="column-6 form-select">
+									<select name="mem_region" class="select-box-region">
+										<option value="" disabled="disabled" selected="selected">거주 지역을 선택해 주세요</option>
+									<option value="seoul">서울시</option>
+										<option value="kyeongki">경기도</option>
+										<option value="incheon">인천시</option>
+										<option value="busan">부산시</option>
+										<option value="daejeon">대전시</option>
+										<option value="daegu">대구시</option>
+										<option value="ulsan">울산시</option>
+										<option value="saejong">세종시</option>
+										<option value="kwangju">광주시</option>
+										<option value="kangwon">강원도</option>
+										<option value="chungbuk">충청북도</option>
+										<option value="chungname">충청남도</option>
+										<option value="kyungbuk">경상북도</option>
+										<option value="kyungnam">경상남도</option>
+										<option value="jeonbuk">전라북도</option>
+										<option value="jeonnam">전라남도</option>
+										<option value="jeju">제주도</option>
+									</select>
+								</div>
+
+								<input type="submit" class="button" value="Sign Up" onclick="javascript:signup()">
 							</form>
 							<div class="help-action">
 								<p>By signing up, you agree to our</p>
@@ -269,7 +297,7 @@
 		</div>
 	</div>
 
-	<script>
+<!-- 	<script>
 		/* LOGIN - MAIN.JS - dp 2017 */
 
 		$(".ui-dialog-titlebar").css("display", "none");
@@ -370,8 +398,22 @@
 				$(this).stop();
 				event.preventDefault();
 				return false;
+			}); 
+		});
+		
+		//select box 
+		$(function() {
+			$('#nights').click(function(){
+				$('#night_option').toggle();
+			});
+
+			$('.option').click(function(){
+				$('.select_text').html($(this).attr('id'));
+				$('#nightselect option[value='+$(this).attr('id')+']').prop('selected', true);
+				$('#night_option').toggle();
 			});
 		});
-	</script>
+		
+	</script> -->
 </body>
 </html>
