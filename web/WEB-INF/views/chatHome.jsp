@@ -7,9 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<link
-	href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
-	rel="stylesheet" type='text/css'>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.5.0/css/solid.css"
+	integrity="sha384-rdyFrfAIC05c5ph7BKz3l5NG5yEottvO/DQ0dCrwD8gzeQDjYBHNr1ucUpQuljos"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.5.0/css/fontawesome.css"
+	integrity="sha384-u5J7JghGz0qUrmEsWzBQkfvc8nK3fUT7DCaQzNQ+q4oEXhGSx+P2OqjWsfIRB8QT"
+	crossorigin="anonymous">
 <link href='<c:url value="/resources/css/chat.css" />' rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script
@@ -51,11 +56,29 @@
 
 		<!-- 채팅 버튼  -->
 		<div class="floating-chat">
-			<i class="fa fa-comments" aria-hidden="true"></i>
+			<i class="fas fa-comments" aria-hidden="true"></i>
+			
+			<form id="move-room-form" method="post" action="moveChatRoom.do">  
+				<input type="hidden" name="roomName" value="">
+			</form>
+			
+			<div class="room-list">
+				<ul>
+					<li>room1</li>
+					<li>room2</li>
+					<li>room3</li>
+					<li>room4</li>
+					<li>room5</li>
+				</ul>
+			</div>
+
 			<div class="chat">
 				<!-- 채팅 헤더  -->
 				<div class="header">
-					<span class="title"> Budong Chat</span>
+					<span id="header-title" class="title">  
+					<c:if test="null eq ${roomName}"> 전체 채팅방 </c:if> 
+					<c:if test="null != ${roomName}"> ${roomName} </c:if>
+					</span>
 					<button>
 						<i class="fa fa-times" aria-hidden="true"></i>
 					</button>
@@ -104,9 +127,10 @@
 			}
 		%>
 	</div>
-
+	
+	
 	<script type="text/javascript">
-		var webSocket = new WebSocket('ws://localhost:8080/chat/chatting');
+		var webSocket = new WebSocket('ws://localhost:8080/budong-info/chatting');
 		webSocket.onerror = function(event) {
 			onError(event)
 		};
@@ -158,7 +182,7 @@
 		}
 
 		//메시지 전송 
-		function send() {
+		function send() { 
 			var userInput = $('.text-box');
 			var newMessage = userInput.html().replace(/\<div\>|\<br.*?\>/ig,
 					'\n').replace(/\<\/div\>/g, '').trim().replace(/\n/g,
@@ -217,6 +241,7 @@
 			element.find('>i').hide();
 			element.addClass('expand');
 			element.find('.chat').addClass('chat-enter');
+			element.find('.room-list').addClass('room-list-enter');
 			/* 			element.find('.other').pseudostyle("before", "background-image", "${userImg}"); */
 			/* var strLength = textInput.val().length * 2; */
 			/* 			element.find('head').append('<style> .messages li.other:before { right: -45px; background-image: url(${userImg});} </style>');  */
@@ -230,22 +255,57 @@
 
 		function closeElement() {
 			element.find('.chat').removeClass('chat-enter').hide();
+			element.find('.room-list').removeClass('room-list-enter').hide();
 			element.find('>i').show();
 			element.removeClass('expand');
 			element.find('.header button').off('click', closeElement);
 			element.find('#sendMessage').off('click', send);
 			element.find('.text-box').off('keydown', onMetaAndEnter).prop(
-					"disabled", true).blur();
+					"disabled", true).blur(); 
+			
 			setTimeout(function() {
 				element.find('.chat').removeClass('chat-enter').show()
+				element.find('.room-list').removeClass('room-list-enter')
+						.show()
 				element.click(openElement);
 			}, 500);
 		}
 
+		/*엔터키 전송 */
 		function onMetaAndEnter(event) {
 			if (event.keyCode == 13) {
 				send();
-			}
-		}
+			} 
+		} 
+	</script> 
+	
+	<script> 
+		var room = $('.room-list li'); 
+		room.click(enterRoom); 
+		
+		
+		/*방 들어가기 */
+		function enterRoom() {
+			/* $('#header-title').text($(this).text()); */  
+			var title = $('#header-title');
+			$("[name='roomName']").val($(this).text()); //전송할 방이름 설정   
+			
+			$.ajax({
+				type :	'POST',
+				data : $("[name='roomName']"), 
+				url : "moveChatRoom.do", 
+				success : function(data) {
+					title.text(data); 
+					console.log(data);
+				}, error : function(data) {
+					console.log("Server Error"); 
+				}
+			}); 
+			
+		}  
+		
+		
+		
+		
 	</script>
 </html>

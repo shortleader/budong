@@ -65,7 +65,6 @@ public class MemberController {
 	public String login(@RequestParam("mem_id") String mem_id, @RequestParam("mem_pw") String mem_pw,
 			HttpServletRequest req) {
 
-		System.out.println("loginnnnnnnn");
 		HttpSession session = req.getSession();
 		MemberDTO memberDTO = service.login(mem_id, mem_pw);
 
