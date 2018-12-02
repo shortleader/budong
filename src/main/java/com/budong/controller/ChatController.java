@@ -27,7 +27,6 @@ public class ChatController {
 	@RequestMapping(value = "/chatHome.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		
 		return "chatHome";
 	} 
 	
@@ -37,16 +36,12 @@ public class ChatController {
 	@ResponseBody
 	public String  moveChatRoom(HttpServletRequest req,HttpServletResponse resp	) {
 		HttpSession session = req.getSession(); 
-		String roomName = req.getParameter("roomName");  
+		String roomName = req.getParameter("roomName");  //이동할 방이름 
 		
-		logger.info("\n기존방이름 : " + session.getAttribute("roomName"));
-		
-		session.setAttribute("roomName", roomName); //세션에 방이름 저장   
+		session.setAttribute("roomName", roomName); //세션에 방이름 저장 
 		logger.info(session.getAttribute("userId")+"님이 이동할 방이름 : " + session.getAttribute("roomName")); 
+		
 		resp.setContentType("text/html; charset=UTF-8");
 		return roomName; 
 	}
-
-	
-	
 }

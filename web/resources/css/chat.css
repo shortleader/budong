@@ -9,7 +9,6 @@ body {
 	font: 12px/16px "Noto Sans", sans-serif;
 }
 
-
 .floating-chat {
 	cursor: pointer;
 	display: flex;
@@ -31,13 +30,13 @@ body {
 
 .enter {
 	transform: translateY(0);
-	opacity: 0.6;s
-	box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px
+	opacity: 0.6;
+	s box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px
 		rgba(0, 0, 0, 0.14);
 }
 
 .expand {
-	width: 500px;
+	width: 600px;
 	max-height: 450px;
 	height: 450px;
 	border-radius: 5px;
@@ -58,11 +57,10 @@ button {
 	text-transform: uppercase;
 	border-radius: 3px;
 	cursor: pointer;
-	margin-bottom: 3px;
 }
 
 .room-list {
-	background-color: #808080;
+	background-color: #444753;
 	display: flex;
 	flex-direction: column;
 	position: absolute;
@@ -81,19 +79,80 @@ button {
 .room-list-enter {
 	opacity: 1;
 	border-radius: 0;
-	margin: 10px;
-	width: 20%;
+	margin: 0px;
+	width: 35%;
 	height: auto;
 }
 
-.room-list li {
+/* .room-list li {
 	padding: 0.3em;
 	list-style-type: none;
 	font-size: 12px;
 	cursor: pointer;
 	width: auto;
+} */
+.room-list .search {
+	padding: 10px;
+	height: 80px;
+	position: relative;
+	margin-bottom: 30px;
+	position: relative;
 }
 
+.room-list  input {
+	border-radius: 3px;
+	border: none;
+	padding: 14px;
+	color: white;
+	background: #6A6C75;
+	width: 90%;
+	font-size: 14px;
+	position: absolute;
+	top: 12px;
+	left: 12px;
+}
+
+.room-list .fa-search {
+	position: absolute;
+	right: 20px;
+	top: 25px;
+	color: white;
+	font-size: 17px;
+}
+
+.room-list ul {
+	padding: 15px;
+	height: 770px;
+	margin: 0px;
+	overflow-y : scroll;
+}
+
+.room-list ul  li {
+	padding-bottom: 20px;
+	font-size: 13px;
+	cursor: pointer;
+	margin-left: 5px;
+}
+
+.room-list img {
+	float: left;
+}
+
+.room-list  .about {
+	float: left;
+	margin-top: 15px;
+	color: lightgray;
+}
+
+.room-list  .about {
+	padding-left: 8px;
+}
+
+.room-list  .status {
+	color: #92959E;
+}
+
+/*채팅 부분 css  */
 .chat {
 	background-color: #F2F5F8;
 	display: flex;
@@ -108,21 +167,23 @@ button {
 	top: 0;
 	right: 0;
 	bottom: 0;
+	left : 220px;
 }
 
 .chat-enter {
 	opacity: 1;
 	border-radius: 0;
-	margin: 10px;
-	width: 75%;
+	margin: 0px;
+	width: 60%;
 	height: auto;
 }
 
 .header {
 	flex-shrink: 0;
-	padding-bottom: 10px;
+	padding-bottom: 15px;
 	display: flex;
 	background-color: #F2F5F8;
+	padding-top: 15px;
 }
 
 .header .title {
@@ -162,6 +223,8 @@ button {
 	border-bottom: 2px solid white;
 	overflow-y: scroll;
 	height: 575px;
+	margin: 0px;
+	text-align: left;
 }
 
 ul {
@@ -169,19 +232,18 @@ ul {
 }
 
 .message-data {
-	margin-bottom: 11px;
+	margin-bottom: 6px;
 }
 
 .message-data-time {
-	font-size: 10px;
+	font-size: 12px;
 	color: gray;
 	padding-left: 6px;
 }
 
 .message-data-name {
-	font-size: 10px;
+	font-size: 12px;
 	color: #545252;
-	padding-left: 6px;
 	font-weight: bold;
 }
 
@@ -203,13 +265,14 @@ ul {
 
 .message {
 	color: white;
-	padding: 10px 15px;
+	padding: 11px 18px;
 	line-height: 20px;
 	font-size: 12px;
 	border-radius: 7px;
 	margin-bottom: 18px;
 	width: 90%;
 	position: relative;
+	text-align: left;
 }
 
 .my-message {
@@ -316,8 +379,8 @@ ul {
 }
 .footer {
 	background-color: #F2F5F8;
-	padding-top: 10px;
 	height: 90px;
+	padding: 15px;
 }
 
 .footer .text-box {
@@ -328,10 +391,12 @@ ul {
 	margin-right: 5px;
 	color: #545252;
 	padding: 2px 5px;
-	line-height: 20px;
-	height: 20px;
+	line-height: 23px;
+	height: 23px;
 	display: inline-block;
 	font-size: 14px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 [contenteditable="true"].single-line {
@@ -376,9 +441,21 @@ keyframes show-chat-even { 0% {
 margin-left
 
 
+
+
+
+
+
+
 :
 
+
+
+
  
+
+
+
 
 0;
 }
@@ -393,9 +470,21 @@ margin-left
 margin-left
 
 
+
+
+
+
+
+
 :
 
+
+
+
  
+
+
+
 
 0;
 }
@@ -410,9 +499,21 @@ margin-left
 margin-left
 
 
+
+
+
+
+
+
 :
 
+
+
+
  
+
+
+
 
 0;
 }
@@ -427,9 +528,21 @@ keyframes show-chat-odd { 0% {
 margin-right
 
 
+
+
+
+
+
+
 :
 
+
+
+
  
+
+
+
 
 0;
 }
@@ -444,9 +557,21 @@ margin-right
 margin-right
 
 
+
+
+
+
+
+
 :
 
+
+
+
  
+
+
+
 
 0;
 }
@@ -460,9 +585,21 @@ margin-right
 margin-right
 
 
+
+
+
+
+
+
 :
 
+
+
+
  
+
+
+
 
 0;
 }

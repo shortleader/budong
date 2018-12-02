@@ -32,16 +32,15 @@ public class MemberController {
 	// 회원 가입
 	@RequestMapping(value = "/insertMember.do", method = RequestMethod.POST)
 	public String insertMember(HttpServletRequest req) throws Exception {
+		logger.info("InsertMember");
 		/*MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
 		MultipartFile mf = mr.getFile("mem_img");
-		String filename = mf.getOriginalFilename();*/
-
-		HttpSession session = req.getSession();
-/*		String upPath = session.getServletContext().getRealPath("/resources/images");
+		String filename = mf.getOriginalFilename();
+		String upPath = session.getServletContext().getRealPath("/resources/images");
 
 		File file = new File(upPath, filename);
-		mf.transferTo(file);
-*/
+		mf.transferTo(file);*/
+
 		MemberDTO dto = new MemberDTO();
 		dto.setMem_id(req.getParameter("mem_id"));
 		dto.setMem_img("");
@@ -68,14 +67,17 @@ public class MemberController {
 		MemberDTO memberDTO = service.login(mem_id, mem_pw);
 
 		if (memberDTO == null) { // 로그인 실패
+			logger.info("로그인 실패");
 			return "redirect:memberJoin.do";
 		} else {
 			// 로그인 성공
 			// 사용자의 아이디, 프로필사진, 이름, 거주지역을 세션에 저장 
+			logger.info("로그인 성공");
 			session.setAttribute("userId", memberDTO.getMem_id());
 			session.setAttribute("userImg", memberDTO.getMem_img());
 			session.setAttribute("userName", memberDTO.getMem_name());
 			session.setAttribute("userRegion", memberDTO.getMem_region());
+			session.setAttribute("roomName", null);
 			return "redirect:chatHome.do";
 		}
 	}
@@ -83,6 +85,7 @@ public class MemberController {
 	// 로그아웃
 	@RequestMapping(value = "/logout.do")
 	public String logout(HttpServletRequest req) {
+		logger.info("로그아웃");
 		HttpSession session = req.getSession();
 		session.invalidate();
 		return "redirect:chatHome.do";
