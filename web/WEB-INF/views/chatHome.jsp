@@ -130,7 +130,8 @@
 	
 	
 	<script type="text/javascript">
-		var webSocket = new WebSocket('ws://localhost:8080/budong-info/chatting');
+		
+		var webSocket = new WebSocket('ws://localhost:8080/budong/chatting');
 		webSocket.onerror = function(event) {
 			onError(event)
 		};
@@ -178,7 +179,7 @@
 		}
 
 		function onError(event) {
-			alert(event.data);
+			alert(event);
 		}
 
 		//메시지 전송 
@@ -303,9 +304,5 @@
 			}); 
 			
 		}  
-		
-		
-		
-		
 	</script>
 </html>

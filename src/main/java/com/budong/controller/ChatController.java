@@ -1,8 +1,5 @@
 package com.budong.controller;
 
-import java.math.RoundingMode;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,20 +13,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author wjddp
- * 채팅 화면 메인 
+ * 채팅 컨트롤러
  */
 @Controller
 public class ChatController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	// 채팅 홈 화면 
 	@RequestMapping(value = "/chatHome.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -38,15 +32,17 @@ public class ChatController {
 	} 
 	
 	
+	//채팅 방 이동 
 	@RequestMapping(value = "/moveChatRoom.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String  moveChatRoom(HttpServletRequest req,HttpServletResponse resp	) {
-		String roomName = req.getParameter("roomName");
-		logger.info("\n이동할 방이름 : " + roomName); 
-		
 		HttpSession session = req.getSession(); 
-		session.setAttribute("roomName", roomName); //세션에 방이름 저장 
+		String roomName = req.getParameter("roomName");  
 		
+		logger.info("\n기존방이름 : " + session.getAttribute("roomName"));
+		
+		session.setAttribute("roomName", roomName); //세션에 방이름 저장   
+		logger.info(session.getAttribute("userId")+"님이 이동할 방이름 : " + session.getAttribute("roomName")); 
 		resp.setContentType("text/html; charset=UTF-8");
 		return roomName; 
 	}

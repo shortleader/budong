@@ -55,7 +55,7 @@
 	</bean>
 
 	<!--웹소켓 핸들러 -->
-	<websocket:handlers>
+	<!-- <websocket:handlers>
 		<websocket:mapping handler="chatHandler"
 			path="/chatting" />
 		<websocket:handshake-interceptors>
@@ -64,5 +64,5 @@
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
 	
-	<bean id="chatHandler" class="com.budong.service.WebSocketHandler"></bean>
+	<bean id="chatHandler" class="com.budong.service.WebSocketHandler"></bean> -->
 </beans>

@@ -1,17 +1,15 @@
 package com.budong.controller;
 
-import java.io.File;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.budong.model.dto.MemberDTO;
 import com.budong.service.interfaces.MainService;
@@ -22,6 +20,7 @@ import com.budong.service.interfaces.MainService;
  */
 @Controller
 public class MemberController {
+	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 
 	private MainService service;
 
@@ -72,7 +71,7 @@ public class MemberController {
 			return "redirect:memberJoin.do";
 		} else {
 			// 로그인 성공
-			// 사용자의 아이디, 프로필사진, 이름, 거주지역을 세션에 저장
+			// 사용자의 아이디, 프로필사진, 이름, 거주지역을 세션에 저장 
 			session.setAttribute("userId", memberDTO.getMem_id());
 			session.setAttribute("userImg", memberDTO.getMem_img());
 			session.setAttribute("userName", memberDTO.getMem_name());
