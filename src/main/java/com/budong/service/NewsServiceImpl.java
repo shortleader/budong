@@ -7,6 +7,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.budong.model.dto.NewsDTO;
@@ -15,6 +17,7 @@ import com.budong.service.interfaces.NewsService;
 @Service
 public class NewsServiceImpl implements NewsService {
 	
+	private static final Logger log = LoggerFactory.getLogger(NewsServiceImpl.class);
 	private String naverUrl = "https://land.naver.com";
 	// https://land.naver.com/news/headline.nhn  -> 네이버 부동산 뉴스  main page
 	@Override
@@ -61,6 +64,7 @@ public class NewsServiceImpl implements NewsService {
 			for(Element e : elem) {
 				val += e.toString();
 			}
+			//log.info(val);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
