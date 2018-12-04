@@ -11,6 +11,7 @@
 					</div>
 					<div class="col-sm-10 nav-links">
 						<a class="scroll-link button-1 active" href="#top-content">Home</a>
+						<a class="scroll-link button-1" href="#services">News</a>
 						<a class="scroll-link button-1" href="#portfolio">Portfolio</a>
 						<a class="scroll-link button-1" href="#team">Our team</a>
 						<a class="scroll-link button-1" href="#reviews">Reviews</a>

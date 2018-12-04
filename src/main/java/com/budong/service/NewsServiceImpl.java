@@ -34,14 +34,19 @@ public class NewsServiceImpl implements NewsService {
 			NewsDTO dto = new NewsDTO();
 			String path = naverUrl + e.getElementsByAttribute("href").attr("href");
 			String img = e.getElementsByAttribute("src").attr("src");
-			String title = e.getElementsByIndexEquals(1).text();
-			String content = e.getElementsByTag("dd").text();
-			String writing = e.getElementsByClass("writing").text();
-			String date = e.getElementsByClass("date").text();
-			int temp = writing.length() + date.length() +2;
+			String title = e.getElementsByIndexEquals(1).select("dt a").text();
+			if(img == null || img.trim().equals("")) {
+				title = e.select("dt").text();
+			}
+			String content = e.select("dd").get(0).text();
+			String writing = e.getElementsByClass("writing").get(0).text();
+			String date = e.getElementsByClass("date").get(0).text();
 			
+			int temp = writing.length() + date.length() +2;
+			// 내용의 텍스트에 뉴스사와 날짜 삭제하고 내용이 108 이상이면 디자인 안깨지게 강제로 줄여준다.
+			if(content.length() > 108) temp += content.length() - 108;
 			content = content.substring(0, content.length() - temp);
-
+			
 			dto.setContent(content);
 			dto.setDate(date);
 			dto.setImg(img);

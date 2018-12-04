@@ -65,7 +65,7 @@ public class MainController {
     }
     @RequestMapping("/content.news")
     public ModelAndView getNewsbody(@RequestParam String param){
-    	ModelAndView mav= new ModelAndView("newsContent");
+    	ModelAndView mav= new ModelAndView("khw/newsContent");
     	String change = param.replaceAll("!", "&");
     	mav.addObject("newsbody", newsService.getContent(change));
     	return mav;
