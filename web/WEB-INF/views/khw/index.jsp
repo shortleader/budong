@@ -108,26 +108,7 @@
                 </div>
             </div>
         </div>
-        
-        
-        <%-- <div id="test">
-        <div class="services-container">
-	        <div class="container">
-	            <div class="row">
-	            	<c:forEach var="item" items="${list}">
-						<div class="col-sm-4 services-box">
-							<div class="services-box-icon">
-								<img src="${item.img}" alt="">
-							</div>
-							<h3><a href="#" onclick="test2('${item.url}')">${item.title}</a>							</h3>
-							<p>${item.content}</p>
-						</div>
-					</c:forEach>
-				</div>
-	        </div>
-        </div>
-        </div> --%>
-        
+                
          <div class="loading-bro">
   		<h1>Loading</h1>
   		<svg id="load" x="0px" y="0px" viewBox="0 0 150 150">
