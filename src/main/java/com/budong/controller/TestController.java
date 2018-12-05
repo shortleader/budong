@@ -21,20 +21,20 @@ public class TestController {
 
 	@Autowired
 	private TestServiceClass testServiceClass;
-	
-	
+
+
 	@RequestMapping("/realState.do")
 	public String index(HttpServletRequest req) {
 		log.info("path [/test/realState.do] status ok");
 		return "test/RealState";
 	}
-	
+
 	@RequestMapping("/apt_dealInfo.do")
 	public String listInfo(HttpServletRequest req) {
 
 		String str_dealYmd = req.getParameter("deal_ymd");
 		str_dealYmd = str_dealYmd.replaceAll("-", "");
-		
+
 		int deal_ymd = Integer.parseInt(str_dealYmd);
 		String lawd_cd = req.getParameter("lawd_cd");
 
@@ -49,5 +49,5 @@ public class TestController {
 
 		return "test/APTDealList";
 	}
-	
+
 }
