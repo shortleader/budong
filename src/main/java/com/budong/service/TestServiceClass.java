@@ -19,7 +19,7 @@ public class TestServiceClass {
 	}
 
 	public Vector<RealEstateAPTDealInfoDTO> listAPTDeal(String lawd_cd, int deal_ymd) {
-		return realEasteDealInfoDAO.getAPTDealInfo(1, lawd_cd, deal_ymd);
+		return (Vector<RealEstateAPTDealInfoDTO>) realEasteDealInfoDAO.getAPTDealInfo(1, lawd_cd, deal_ymd);
 	}
 	
 }
