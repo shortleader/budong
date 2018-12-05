@@ -26,14 +26,7 @@ public class MainController {
     @Autowired
     private NewsServiceImpl newsService;
 
-    /*@RequestMapping("/")
-    public String goToIndexPage() {
-        log.info("path [/] status ok");
-        return R.path.INDEX;
-        return "khw/index";
-    }*/
-    
-    
+       
     @RequestMapping("/")
     public ModelAndView goToIndexPage() {
     	String param = null;

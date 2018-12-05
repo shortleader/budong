@@ -3,7 +3,7 @@
 		function test(page){
 		var param = page;
 			$.ajax({
-		    url:'/budong-info/title.news',
+		    url:'/budong/title.news',
 		    data : "param=" + param,
 		    dataType:'text',
 		    success:function(data){
@@ -15,7 +15,7 @@
 		function test2(url){
 			var param = url;
 			   $.ajax({
-		           url:'/budong-info/content.news',
+		           url:'/budong/content.news',
 		           data : "param=" + param,
 		           dataType:'text',
 		           success:function(data){
