@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.budong.controller.ChatController;
+import com.budong.model.dto.MemberDTO;
 
 /**
  * 
@@ -30,7 +31,7 @@ import com.budong.controller.ChatController;
 public class WebSocketHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
-	
+
 	private HttpSession httpSession;
 	private static Set<Session> clients = Collections.synchronizedSet(new HashSet<Session>());
 	private static Map<Session, HttpSession> map = new HashMap<>();
@@ -45,13 +46,16 @@ public class WebSocketHandler {
 
 		map.put(session, httpSession);
 		clients.add(session);
+		logger.info("session  : " + clients.size() + "httpsession : " + map.size());
 	}
 
 	// 메시지 전송
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException {
-		logger.info("\n WebSocket onMessage : " + message);
-		logger.info(httpSession.getAttribute("userId") + "님의 현재방  : " + httpSession.getAttribute("roomName"));
+		logger.info("\n WebSocket onMessage : " + message); 
+		
+		MemberDTO dto = (MemberDTO) httpSession.getAttribute("login");
+		logger.info(dto.getMem_id() + "님의 현재방  : " + httpSession.getAttribute("roomName"));
 
 		JSONObject jsonObject = new JSONObject(message);
 		String roomName = jsonObject.getString("roomName"); // 현재 방이름
@@ -59,7 +63,7 @@ public class WebSocketHandler {
 		synchronized (clients) {
 			for (Session client : clients) {
 				HttpSession hs = map.get(client);
-				//같은방에 있는 사용자에게만 메시지를 전송 
+				// 같은방에 있는 사용자에게만 메시지를 전송
 				if ((!roomName.equals("")) && hs.getAttribute("roomName").equals(roomName)) {
 					client.getBasicRemote().sendText(message);
 				}
@@ -73,13 +77,17 @@ public class WebSocketHandler {
 		logger.info("WebSocket 연결 해제  : " + session.getId());
 		clients.remove(session);
 		map.remove(session);
+		logger.info("session  : " + clients.size() + "httpsession : " + map.size());
+
 	}
 
 	@OnError
 	public void onError(Session session, Throwable exception) throws Exception {
 		logger.error("WebSocket onError : " + exception.toString());
-		map.remove(session); 
+		map.remove(session);
 		clients.remove(session);
+		logger.info("session  : " + clients.size() + "httpsession : " + map.size());
+
 	}
 
 }
