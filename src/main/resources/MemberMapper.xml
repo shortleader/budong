@@ -6,7 +6,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.budong.model.interfaces.MemberDAO">
 	<insert id="insertMember"
 		parameterType="com.budong.model.dto.MemberDTO">
-		insert into budong_member values 
+		insert into budong_member(mem_id, mem_pw, mem_name, mem_img, mem_region) values 
 			(#{mem_id}, #{mem_pw}, #{mem_name}, #{mem_img}, #{mem_region})
-	</insert>
+	</insert> 
+	
+	<select id="checkId" resultType="int">
+		select count(*) from budong_member where mem_id = #{mem_id}	
+	</select> 
+	
+	
 </mapper>

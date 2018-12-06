@@ -6,10 +6,15 @@ public class MemberDTO {
 	private String mem_name;
 	private String mem_img;
 	private String mem_region;
-	
+	private boolean useCookie;
 
 	public MemberDTO() {
 		mem_img = "";
+	}
+
+	public MemberDTO(String id, String password) {
+		this.mem_id = id;
+		this.mem_pw = password;
 	}
 
 	public String getMem_id() {
@@ -52,9 +57,12 @@ public class MemberDTO {
 		this.mem_region = mem_region;
 	}
 
-	public MemberDTO(String id, String password) {
-		this.mem_id = id;
-		this.mem_pw = password;
+	public boolean isUseCookie() {
+		return useCookie;
+	}
+
+	public void setUseCookie(boolean useCookie) {
+		this.useCookie = useCookie;
 	}
 
 }

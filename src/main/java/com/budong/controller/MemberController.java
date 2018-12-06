@@ -1,6 +1,11 @@
 package com.budong.controller;
 
+import java.io.File;
+import java.util.Date;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -9,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.budong.model.dto.MemberDTO;
 import com.budong.service.interfaces.MainService;
@@ -28,22 +35,23 @@ public class MemberController {
 	public MemberController(MainService service) {
 		this.service = service;
 	}
- 
+
 	// 회원 가입
 	@RequestMapping(value = "/insertMember.do", method = RequestMethod.POST)
 	public String insertMember(HttpServletRequest req) throws Exception {
 		logger.info("InsertMember");
-		/*MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
+
+		MultipartHttpServletRequest mr = (MultipartHttpServletRequest) req;
 		MultipartFile mf = mr.getFile("mem_img");
 		String filename = mf.getOriginalFilename();
-		String upPath = session.getServletContext().getRealPath("/resources/images");
+		String upPath = req.getSession().getServletContext().getRealPath("/resources/images");
 
 		File file = new File(upPath, filename);
-		mf.transferTo(file);*/
+		mf.transferTo(file);
 
 		MemberDTO dto = new MemberDTO();
 		dto.setMem_id(req.getParameter("mem_id"));
-		dto.setMem_img("");
+		dto.setMem_img(filename);
 		dto.setMem_name(req.getParameter("mem_name"));
 		dto.setMem_pw(req.getParameter("mem_pw"));
 		dto.setMem_region(req.getParameter("mem_region"));
@@ -51,7 +59,22 @@ public class MemberController {
 		service.insertMember(dto);
 		return "redirect:chatHome.do";
 	}
-
+	
+	//아이디 중복 체크 
+	@RequestMapping(value="/checkId.do" , method = RequestMethod.POST) 
+	@ResponseBody
+	public String isAvailableId(HttpServletRequest req) {
+		String id = req.getParameter("id");  
+		logger.info("id: " +id);
+		boolean available = service.isAvailableId(id);
+		
+		if(available) { 
+			return "valid"; 
+		}else {
+			return "invalid"; 
+		}
+	} 
+	
 	// 로그인 페이지 이동
 	@RequestMapping(value = "/loginHome.do")
 	public String loginHome() {
@@ -60,23 +83,42 @@ public class MemberController {
 
 	// 로그인
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-	public String login(@RequestParam("mem_id") String mem_id, @RequestParam("mem_pw") String mem_pw,
-			HttpServletRequest req) {
+	public String login(HttpServletRequest req, HttpServletResponse resp, MemberDTO dto) {
 
 		HttpSession session = req.getSession();
-		MemberDTO memberDTO = service.login(mem_id, mem_pw);
+
+		logger.info("session login : " + session.getAttribute("login"));
+		MemberDTO memberDTO = service.login(dto.getMem_id(), dto.getMem_pw());
+
+		if (session.getAttribute("login") != null) {
+			session.removeAttribute("login");
+		}
 
 		if (memberDTO == null) { // 로그인 실패
 			logger.info("로그인 실패");
-			return "redirect:memberJoin.do";
+			return "redirect:chatHome.do";
 		} else {
 			// 로그인 성공
-			// 사용자의 아이디, 프로필사진, 이름, 거주지역을 세션에 저장 
 			logger.info("로그인 성공");
-			session.setAttribute("userId", memberDTO.getMem_id());
-			session.setAttribute("userImg", memberDTO.getMem_img());
-			session.setAttribute("userName", memberDTO.getMem_name());
-			session.setAttribute("userRegion", memberDTO.getMem_region());
+
+			// 자동 로그인 선택한 경우 쿠키에 세션ID를 저장한다.
+			if (dto.isUseCookie()) {
+				Cookie cookie = new Cookie("loginCookie", session.getId());
+				cookie.setPath("/");
+				cookie.setMaxAge(60 * 60 * 24 * 7); // 7일 저장
+
+				resp.addCookie(cookie); // 쿠키를 저장한다.
+
+				// 디비 테이블에 사용자의 세션ID, 유효시간을 저장한다.
+				// 유효시간 = 현재시간 + 쿠키유효시간
+				int limitTime = 60 * 60 * 24 * 7;
+				Date session_limit = new Date(System.currentTimeMillis() + (limitTime * 1000));
+				service.keepLogin(memberDTO.getMem_id(), session.getId(), session_limit);
+
+			}
+
+			// 사용자정보를 세션에 저장
+			session.setAttribute("login", memberDTO);
 			session.setAttribute("roomName", null);
 			return "redirect:chatHome.do";
 		}
@@ -87,8 +129,9 @@ public class MemberController {
 	public String logout(HttpServletRequest req) {
 		logger.info("로그아웃");
 		HttpSession session = req.getSession();
+		session.removeAttribute("login");
 		session.invalidate();
+
 		return "redirect:chatHome.do";
 	}
-
 }

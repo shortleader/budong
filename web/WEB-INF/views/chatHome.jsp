@@ -35,14 +35,20 @@
 </script>
 </head>
 <body>
-
+	<div>
+		아이디 : ${login.mem_id} <br> 이름 : ${login.mem_name } <br>
+		프로필 사진 : <img src="<c:url value='/resources/images/${login.mem_img}'/>"/><br> 
+		거주 지역 : ${login.mem_region}  
+		
+		
+		
+	</div>
 	<div align="center">
 		<%
-			if (session.getAttribute("userId") != null) {
+			if (session.getAttribute("login") != null) {
 		%>
 		<input type="button" value="로그아웃" onClick="location.href='logout.do'" />
-		<c:set var="userId" value="${userId}" />
-		<c:set var="userImg" value="${userImg}" />
+		<c:set var="userId" value="${login.mem_id}" />
 
 		<!--로그인 팝업 모달  -->
 		<div class="modal">this is a modal pop up</div>
@@ -110,7 +116,7 @@
 				</ul>
 			</div>
 
-			
+
 			<!--채팅 컨테이너  -->
 			<div class="chat">
 				<!-- 채팅 헤더  -->
@@ -173,7 +179,7 @@
 			var msg = JSON.parse(event.data);
 			var messagesContainer = $('.chat-history');
 
-			if (msg.id != "${userId}") {
+			if (msg.id != "${login.mem_id}") {
 				messagesContainer
 						.append([
 								'<li> <div class="message-data"> <span class="message-data-name">',
@@ -183,7 +189,6 @@
 								'</span> </div> <div class="message other-message">',
 								msg.text, '</div> </li>' ].join(''));
 			}
-
 			messagesContainer.finish().animate({
 				scrollTop : messagesContainer.prop("scrollHeight")
 			}, 250);
@@ -212,8 +217,7 @@
 			//아이디, 프로필이미지, 채팅내용, 방이름, 보낸시간을 JSON에 넣음 			
 			var d = new Date();
 			var msg = {
-				id : "${userId}",
-				img : "${userImg}",
+				id : "${login.mem_id}",
 				text : newMessage,
 				roomName : $("[name='roomName']").val(),
 				date : d.toLocaleString()
