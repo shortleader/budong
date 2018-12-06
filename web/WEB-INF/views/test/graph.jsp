@@ -21,28 +21,39 @@
                     text: "아파트 년도별 매매가"
                 },
                 axisX: {
-                    valueFormatString: "YYYY"
+                    valueFormatString: "YYYY",
+                    interval:1,
+                    intervalType:"year"
                 },
                 axisY: {
                     title: "시세(만원)",
                     includeZero: false,
-                    maximum: 1000
+                    ValueFormatString: "#,###.###",
+                    maximum: 40000
                 },
                 data: [{
                     type: "column",
                     xValueType: "dateTime",
-                    xValueFormatString: "YYYY",
-                    yValueFormatString: "#,##0won",
+                    xValueFormatString:"YYYY",
+                    yValueFormatString:"#,###.###",
                     dataPoints: dataPoints
                 }]
             };
             updateData();
 
             function addData(data) {
+                var max = 0;
                 $.each(data, function (key, value) {
-                    dataPoints.push(value)
+                    dataPoints.push({"x": new Date(value["year"] + "-1-1"), "y": value["avg"]});
+
+                    if(max < value["avg"]) {
+                        max = value["avg"];
+                    }
                 });
 
+                roundUpMaximum(max);
+
+                console.log(dataPoints);
                 $("#chartContainer").CanvasJSChart(options);
                 /*var chart = new CanvasJS.Chart("chartContainer",options);
                 chart.render();*/
@@ -51,7 +62,24 @@
             }
 
             function updateData() {
-                $.getJSON("http://localhost:8090/test/<%=R.json.GRAPH_MAPPING%>", addData);
+                var date = new Date();
+                var nowYear = date.getFullYear();
+                var fromYear = nowYear - 5;
+                var requestRest = "http://localhost:8090<%=R.rest.apartment_deal_info_avg_by_year%>"
+                    + "?yearFrom=" + fromYear
+                    + "&yearTo=" + nowYear;
+
+                $.getJSON(requestRest, addData);
+            }
+
+            function roundUpMaximum(max) {
+                max = Math.floor(max);
+
+                var ceilLength = max.toString().length - 1;
+                var tenPowCeilLength = Math.pow(10,ceilLength);
+                options["axisY"].maximum = Math.floor(max / tenPowCeilLength + 1) * tenPowCeilLength;
+
+                console.log(options["axisY"].maximum);
             }
 
         }
