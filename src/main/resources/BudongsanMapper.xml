@@ -48,7 +48,7 @@
         order by s.MONTH
     </select>
 
-    <insert id="updateData" parameterType="com.budong.model.dto.BudongsanApartmentDealDTO">
+    <update id="updateData" parameterType="com.budong.model.dto.BudongsanApartmentDealDTO">
         merge into BUDONGSAN
         using dual
         on (
@@ -63,7 +63,7 @@
             insert values (#{aLotNumberAddress}, #{districtCode}, #{year}, #{month}, #{day},
                            #{districtName}, #{floor}, #{price}, #{apartmentName}, #{constructionYear},
                            #{netArea})
-    </insert>
+    </update>
 
     <!-- 지역 내 세부 정보 제공 가능성이 있음 id만 바꾸면 사용가능 -->
     <!--<select id="getApartmentDealPriceYearDistrictCodeAvg" parameterType="map"
