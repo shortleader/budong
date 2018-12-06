@@ -15,7 +15,7 @@
 							<div class="services-box-icon">
 								<img src="${item.img}" alt="">
 							</div>
-							<h3><a href="#" onclick="getContent('${item.url}','${param.param}')">${item.title}</a></h3>
+							<h3><a href="#services-container" onclick="getContent('${item.url}','${date}')">${item.title}</a></h3>
 							<p>${item.content} <b>${item.writing}</b></p>
 						</div>
 					</c:forEach>

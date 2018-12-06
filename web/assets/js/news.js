@@ -19,7 +19,7 @@
 		function getTitle(page){
 		var param = page;
 			$.ajax({
-		    url:'/budong/title.news',
+		    url:'/budong-info/title.news',
 		    data : "param=" + param,
 		    dataType:'text',
 		    success:function(data){
@@ -32,7 +32,7 @@
 			var param = url;
 			var position = pos;
 			   $.ajax({
-		           url:'/budong/content.news',
+		           url:'/budong-info/content.news',
 		           data : "param=" + param+"&pos="+pos,
 		           dataType:'text',
 		           success:function(data){
