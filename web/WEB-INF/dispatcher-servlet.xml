@@ -56,4 +56,19 @@
     <bean id="client" class="okhttp3.OkHttpClient">
     </bean>
 
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="C:\Users\wjddp\Desktop" />
+	</bean>
+
+	<!--웹소켓 핸들러 -->
+	<!-- <websocket:handlers>
+		<websocket:mapping handler="chatHandler"
+			path="/chatting" />
+		<websocket:handshake-interceptors>
+			<bean
+				class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+
+	<bean id="chatHandler" class="com.budong.service.WebSocketHandler"></bean> -->
 </beans>
