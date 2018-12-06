@@ -22,7 +22,7 @@ public class BudongsanInfoDAOImpl implements BudongsanInfoDAO {
 
     @Override
     public void updateData(BudongsanApartmentDealDTO data) {
-        mybatis.insert(prefix + "updateData", data);
+        mybatis.update(prefix + "updateData", data);
     }
 
     @Autowired
