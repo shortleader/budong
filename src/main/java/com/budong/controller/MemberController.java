@@ -90,9 +90,9 @@ public class MemberController {
 		logger.info("session login : " + session.getAttribute("login"));
 		MemberDTO memberDTO = service.login(dto.getMem_id(), dto.getMem_pw());
 
-		if (session.getAttribute("login") != null) {
+		/*if (session.getAttribute("login") != null) {
 			session.removeAttribute("login");
-		}
+		}*/
 
 		if (memberDTO == null) { // 로그인 실패
 			logger.info("로그인 실패");
@@ -119,7 +119,10 @@ public class MemberController {
 
 			// 사용자정보를 세션에 저장
 			session.setAttribute("login", memberDTO);
-			session.setAttribute("roomName", null);
+			session.setAttribute("roomName", null); 
+			
+			MemberDTO cdto = (MemberDTO) session.getAttribute("login");
+			logger.info(cdto.getMem_id());
 			return "redirect:chatHome.do";
 		}
 	}

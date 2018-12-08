@@ -231,6 +231,9 @@ ul {
 	list-style-type: none;
 }
 
+.notice-message {
+	font-size : 11px; 
+}
 .message-data {
 	margin-bottom: 6px;
 }
