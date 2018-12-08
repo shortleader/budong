@@ -39,9 +39,10 @@ public class ChatController {
 		HttpSession session = req.getSession();  
 		String roomName = req.getParameter("roomName");  //이동할 방이름 
 		
-		session.setAttribute("roomName", roomName); //세션에 방이름 저장 
-		logger.info(session.getAttribute("userId")+"님이 이동할 방이름 : " + session.getAttribute("roomName")); 
+		session.setAttribute("prevRoom", session.getAttribute("roomName")); //이동하기 이전 방 
+		session.setAttribute("roomName", roomName); //이동할 방 
 		
+		logger.info("이동할 방이름 : " + session.getAttribute("roomName")); 
 		resp.setContentType("text/html; charset=UTF-8");
 		return roomName; 
 	}
