@@ -5,7 +5,7 @@
 }
 
 body {
-	background: skyblue;
+	background: #E6E6FA;
 	font: 12px/16px "Noto Sans", sans-serif;
 }
 
@@ -231,6 +231,9 @@ ul {
 	list-style-type: none;
 }
 
+.notice-message {
+	font-size : 11px; 
+}
 .message-data {
 	margin-bottom: 6px;
 }
