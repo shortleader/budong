@@ -1,12 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
-<aside id="test">
+
+<!-- Page Content -->
+<div class="page">
+	<div class="container">
+
+		<!-- Page Heading -->
+		<h1 class="my-4">
+			Page Heading <small>Secondary Text</small>
+		</h1>
+
+		<div class="row">${newsbody}</div>
+		<!-- /.row -->
+	</div>
+</div>
+end
+<!-- /.container -->
+
+
+
+<%-- <aside id="test">
  <div class="services-container">
 <b><a href="#services-container" onclick="getTitle('${param.pos}')"> << </a> </b>
 ${newsbody}
 </div>
-</aside>
+</aside> --%>
 <%-- <div id="test">
         <div class="services-container">
 	        <div class="container">
