@@ -1,10 +1,13 @@
 package com.budong.controller;
 
-import java.util.List;
-import javax.servlet.ServletRequest;
+import java.util.*;
+
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import com.budong.R;
+import com.budong.util.DistrictCode;
+import com.budong.util.DistrictCodeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.budong.model.dto.RealEstateAPTDealInfoDTO;
 import com.budong.service.TestServiceClass;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/test")
@@ -21,53 +25,64 @@ public class TestController {
 
 	private final TestServiceClass testServiceClass;
 
-	@Autowired
-	public TestController(TestServiceClass testServiceClass) {
-		this.testServiceClass = testServiceClass;
-	}
+    private final DistrictCodeSet districtCodeSet;
 
-	@RequestMapping("/realState.do")
-	public String index(HttpServletRequest req) {
-		log.info("path [/test/realState.do] status ok");
-		return "test/RealState";
-	}
+    @Autowired
+    public TestController(TestServiceClass testServiceClass, DistrictCodeSet districtCodeSet) {
+        this.testServiceClass = testServiceClass;
+        this.districtCodeSet = districtCodeSet;
+    }
 
-	@RequestMapping("/apartmentDealInfo.do")
-	public String listInfo(HttpServletRequest req) {
 
-		String str_dealYmd = req.getParameter("deal_ymd");
-		str_dealYmd = str_dealYmd.replaceAll("-", "");
+    @RequestMapping("/realState.do")
+    public String index(HttpServletRequest req) {
+        log.info("path [/test/realState.do] status ok");
+        return "test/RealState";
+    }
 
-		int deal_ymd = Integer.parseInt(str_dealYmd);
-		String lawd_cd = req.getParameter("lawd_cd");
+    @RequestMapping("/apartmentDealInfo.do")
+    public String listInfo(HttpServletRequest req) {
 
-		// go service
-		List<RealEstateAPTDealInfoDTO> v = testServiceClass.listAPTDeal(lawd_cd, deal_ymd);
+        String str_dealYmd = req.getParameter("deal_ymd");
+        str_dealYmd = str_dealYmd.replaceAll("-", "");
 
-		req.setAttribute("list", v);
+        int deal_ymd = Integer.parseInt(str_dealYmd);
+        String lawd_cd = req.getParameter("lawd_cd");
 
-		log.debug("deal_ymd = " + deal_ymd);
-		log.debug("lawd_cd = " + lawd_cd);
-		log.debug("vector size = " + v.size());
+        // go service
+        List<RealEstateAPTDealInfoDTO> v = testServiceClass.listAPTDeal(lawd_cd, deal_ymd);
 
-		return "test/APTDealList";
-	}
+        req.setAttribute("list", v);
 
-	/** graph test section */
-	@RequestMapping(R.mapping.graph_year_avg)
-	public String goToTestGraphYear() {
-		return R.path.graph_year;
-	}
+        log.debug("deal_ymd = " + deal_ymd);
+        log.debug("lawd_cd = " + lawd_cd);
+        log.debug("vector size = " + v.size());
 
-	@RequestMapping(R.mapping.graph_year_month_avg)
-	public String goToTestGraphYearMonth() {
-		return R.path.graph_year_month;
-	}
+        return "test/APTDealList";
+    }
 
-	@RequestMapping(R.mapping.graph_year_districtCode_avg)
-	public String goToTestGraphYearDistrict() {
-		return R.path.graph_year_districtCode_avg;
-	}
+    /** graph test section */
+    @RequestMapping(R.mapping.graph_year_avg)
+    public String goToTestGraphYear() {
+        return R.path.graph_year;
+    }
 
-	/* graph test section end */
+    @RequestMapping(R.mapping.graph_year_month_avg)
+    public String goToTestGraphYearMonth() {
+        return R.path.graph_year_month;
+    }
+
+    @RequestMapping(R.mapping.graph_year_districtCode_avg)
+    public ModelAndView goToTestGraphYearDistrict() {
+        List<DistrictCode> districtCodeList = new ArrayList<>(districtCodeSet);
+        districtCodeList.sort(Comparator.comparing(DistrictCode::getDistrictName));
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("districtCodeList",districtCodeList);
+
+        return new ModelAndView(R.path.graph_year_districtCode_avg, parameters);
+    }
+
+    /* graph test section end*/
+
 }
