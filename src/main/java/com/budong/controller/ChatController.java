@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.budong.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,16 +25,16 @@ public class ChatController {
 	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
 	
 	// 채팅 홈 화면 
-	@RequestMapping(value = "/chatHome.do", method = RequestMethod.GET)
+	@RequestMapping(value = R.mapping.chat_home, method = RequestMethod.GET)
 	public String home(Locale locale, Model model) { 
 		
 		logger.info("Welcome home! The client locale is {}.", locale);  
-		return "chatHome";
+		return R.path.chat_home;
 	} 
 	
 	
 	//채팅 방 이동 
-	@RequestMapping(value = "/moveChatRoom.do", method = RequestMethod.POST)
+	@RequestMapping(value = R.mapping.move_chat_room, method = RequestMethod.POST)
 	@ResponseBody
 	public String  moveChatRoom(HttpServletRequest req,HttpServletResponse resp	) {
 		HttpSession session = req.getSession();  

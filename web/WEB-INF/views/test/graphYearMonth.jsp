@@ -28,7 +28,7 @@
                     },
                     axisX: {
                         valueFormatString: "YYYY.MM",
-                        interval : 1,
+                        interval: 1,
                         intervalType: "month"
                     },
                     axisY: {
@@ -52,9 +52,12 @@
                     $.each(data, function (key, value) {
                         console.log("input month =" + value["month"]);
                         console.log(new Date(value["year"], value["month"], 1));
-                        dataPoints.push({"x": new Date(value["year"] + "-" +value["month"] + "-1"), "y": value["avg"]});
+                        dataPoints.push({
+                            "x": new Date(value["year"] + "-" + value["month"] + "-1"),
+                            "y": value["avg"]
+                        });
 
-                        if(max < value["avg"]) {
+                        if (max < value["avg"]) {
                             max = value["avg"];
                         }
                     });
@@ -72,7 +75,7 @@
 
                 function updateData() {
                     var fromMonth = 1;
-                    var requestRest = "http://localhost:8090<%=R.rest.apartment_deal_info_avg_by_year_month%>"
+                    var requestRest = "<%=R.requestToHost(R.rest.apartment_deal_info_avg_by_year_month)%>"
                         + "?monthFrom=" + fromMonth
                         + "&monthTo=" + month
                         + "&year=" + year;
@@ -84,7 +87,7 @@
                     max = Math.floor(max);
 
                     var ceilLength = max.toString().length - 1;
-                    var tenPowCeilLength = Math.pow(10,ceilLength);
+                    var tenPowCeilLength = Math.pow(10, ceilLength);
                     options["axisY"].maximum = Math.floor(max / tenPowCeilLength + 1) * tenPowCeilLength;
 
                     console.log(options["axisY"].maximum);

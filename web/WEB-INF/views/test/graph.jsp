@@ -22,8 +22,8 @@
                 },
                 axisX: {
                     valueFormatString: "YYYY",
-                    interval:1,
-                    intervalType:"year"
+                    interval: 1,
+                    intervalType: "year"
                 },
                 axisY: {
                     title: "시세(만원)",
@@ -34,8 +34,8 @@
                 data: [{
                     type: "column",
                     xValueType: "dateTime",
-                    xValueFormatString:"YYYY",
-                    yValueFormatString:"#,###.###",
+                    xValueFormatString: "YYYY",
+                    yValueFormatString: "#,###.###",
                     dataPoints: dataPoints
                 }]
             };
@@ -46,7 +46,7 @@
                 $.each(data, function (key, value) {
                     dataPoints.push({"x": new Date(value["year"] + "-1-1"), "y": value["avg"]});
 
-                    if(max < value["avg"]) {
+                    if (max < value["avg"]) {
                         max = value["avg"];
                     }
                 });
@@ -65,7 +65,7 @@
                 var date = new Date();
                 var nowYear = date.getFullYear();
                 var fromYear = nowYear - 5;
-                var requestRest = "http://localhost:8090<%=R.rest.apartment_deal_info_avg_by_year%>"
+                var requestRest = "<%=R.requestToHost(R.rest.apartment_deal_info_avg_by_year)%>"
                     + "?yearFrom=" + fromYear
                     + "&yearTo=" + nowYear;
 
@@ -76,7 +76,7 @@
                 max = Math.floor(max);
 
                 var ceilLength = max.toString().length - 1;
-                var tenPowCeilLength = Math.pow(10,ceilLength);
+                var tenPowCeilLength = Math.pow(10, ceilLength);
                 options["axisY"].maximum = Math.floor(max / tenPowCeilLength + 1) * tenPowCeilLength;
 
                 console.log(options["axisY"].maximum);

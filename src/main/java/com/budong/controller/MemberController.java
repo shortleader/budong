@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.budong.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class MemberController {
 	}
 
 	// 회원 가입
-	@RequestMapping(value = "/insertMember.do", method = RequestMethod.POST)
+	@RequestMapping(value = R.mapping.insert_member, method = RequestMethod.POST)
 	public String insertMember(HttpServletRequest req) throws Exception {
 		logger.info("InsertMember");
 
@@ -57,11 +58,11 @@ public class MemberController {
 		dto.setMem_region(req.getParameter("mem_region"));
 
 		service.insertMember(dto);
-		return "redirect:chatHome.do";
+		return "redirect:" + R.mapping.chat_home;
 	}
 	
 	//아이디 중복 체크 
-	@RequestMapping(value="/checkId.do" , method = RequestMethod.POST) 
+	@RequestMapping(value= R.mapping.check_id , method = RequestMethod.POST)
 	@ResponseBody
 	public String isAvailableId(HttpServletRequest req) {
 		String id = req.getParameter("id");  
@@ -76,13 +77,13 @@ public class MemberController {
 	} 
 	
 	// 로그인 페이지 이동
-	@RequestMapping(value = "/loginHome.do")
+	@RequestMapping(value = R.mapping.login_home)
 	public String loginHome() {
-		return "member/memberLogin";
+		return R.path.login_home;
 	}
 
 	// 로그인
-	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
+	@RequestMapping(value = R.mapping.login, method = RequestMethod.POST)
 	public String login(HttpServletRequest req, HttpServletResponse resp, MemberDTO dto) {
 
 		HttpSession session = req.getSession();
@@ -96,7 +97,7 @@ public class MemberController {
 
 		if (memberDTO == null) { // 로그인 실패
 			logger.info("로그인 실패");
-			return "redirect:chatHome.do";
+			return "redirect:" + R.mapping.chat_home;
 		} else {
 			// 로그인 성공
 			logger.info("로그인 성공");
@@ -123,18 +124,18 @@ public class MemberController {
 			
 			MemberDTO cdto = (MemberDTO) session.getAttribute("login");
 			logger.info(cdto.getMem_id());
-			return "redirect:chatHome.do";
+			return "redirect:" + R.mapping.chat_home;
 		}
 	}
 
 	// 로그아웃
-	@RequestMapping(value = "/logout.do")
+	@RequestMapping(value = R.mapping.logout)
 	public String logout(HttpServletRequest req) {
 		logger.info("로그아웃");
 		HttpSession session = req.getSession();
 		session.removeAttribute("login");
 		session.invalidate();
 
-		return "redirect:chatHome.do";
+		return "redirect:" + R.mapping.chat_home;
 	}
 }

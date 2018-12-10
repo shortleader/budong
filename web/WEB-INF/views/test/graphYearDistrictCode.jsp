@@ -86,7 +86,7 @@
 
                 function updateData() {
                     var districtCode = districtCodePicker.val();
-                    var requestRest = "http://localhost:8090<%=R.rest.apartment_deal_info_avg_by_year_districtCode%>"
+                    var requestRest = "<%= R.requestToHost(R.rest.apartment_deal_info_avg_by_year_districtCode) %>"
                         + "?districtCode=" + districtCode
                         + "&year=" + year;
 

@@ -3,8 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.budong.model.interfaces.MemberDAO">
+
+	<!--아이디와 비밀번호가 일치하면 사용자 정보가 담긴 DTO 리턴  -->
     <select id="login" parameterType="com.budong.model.dto.MemberDTO" resultType="com.budong.model.dto.MemberDTO">
-        select * from JSP_LOGIN where ID=#{id} and PASSWORD=#{password}
-    </select>
+        select * from budong_member where mem_id=#{mem_id} and mem_pw=#{mem_pw}
+    </select> 
+    
+    <!--자동 로그인에 체크했을 경우 세션ID와 타임스탬프를 저장  --> 
+	<update id="keepLogin"> 
+		update budong_member set session_key = #{session_key}, session_limit=#{session_limit} 
+			where mem_id = #{mem_id} 	
+	</update>
+ 	
+ 	<!--세션키가 유효한지 확인한다. 유효할경우 해당 사용자의 정보를 담은 DTO 리턴  -->
+ 	<select id="checkSessionValid" resultType="com.budong.model.dto.MemberDTO">
+ 		select * from budong_member where session_key=#{session_key} and session_limit > sysdate
+ 	</select>
 </mapper> 
  

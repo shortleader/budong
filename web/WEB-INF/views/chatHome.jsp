@@ -1,4 +1,5 @@
 <%@page import="org.springframework.web.context.annotation.SessionScope"%>
+<%@ page import="com.budong.R" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -160,23 +161,23 @@
 		var webSocket;
 
 		function connectWebSocket() {			/*웹 소켓 연결 */
-			webSocket = new WebSocket('ws://localhost:8080/budong/chatting');
+			webSocket = new WebSocket(<%=R.requestToHost("ws",R.mapping.request_web_socket)%>); <%-- ws://localhost:8080/budong/chatting --%>
 			webSocket.onerror = function(event) {
-				onError(event)
+				onError(event);
 			};
 
 			webSocket.onopen = function(event) {
-				console.log(webSocket+"연결")
-				onOpen(event)
+				console.log(webSocket+"연결");
+				onOpen(event);
 			};
 
 			webSocket.onmessage = function(event) {
-				onMessage(event)
+				onMessage(event);
 			};
 			
 			webSocket.onclose=function(event) {
-				console.log(webSocket+"해제")
-				onClose(event)
+				console.log(webSocket+"해제");
+				onClose(event);
 			}
 		} 
 		 
