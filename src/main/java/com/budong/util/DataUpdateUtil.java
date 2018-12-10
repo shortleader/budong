@@ -11,7 +11,9 @@ import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,36 +26,26 @@ import java.util.*;
 @Component
 public class DataUpdateUtil {
     private static final Logger log = LoggerFactory.getLogger(DataUpdateUtil.class);
-
-    private final BudongsanInfoDAO dao;
-
-    private final Gson gson;
-
-    private final OkHttpClient client;
-
-    private final Set<String> districtCodeSet;
-
     private static final String serviceKey =
             "1O44Uic%2FwmxgeiJ1ybbEO2mZCseE7oM%2FpHnCSWmIIG%2BGjNIzLfsUrKSYGy5qzAe4cKKfYvuDYZwv9f9O8%2B6UpQ%3D%3D";
-
     private static final String hostUrl = "openapi.molit.go.kr";
-
     private static final int hostPort = 8081;
-
     private static final String methodPath = "OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade";
-
     private static final String onFailureMsg =
             "<response><header><resultCode>99</resultCode><resultMsg>FAIL</resultMsg></header></response>";
-
+    private final BudongsanInfoDAO dao;
+    private final Gson gson;
+    private final OkHttpClient client;
+    private final DistrictCodeSet districtCodeSet;
     @Value("classpath:district-code-table.txt")
     private Resource res;
 
     @Autowired
-    public DataUpdateUtil(BudongsanInfoDAO dao, Gson gson, OkHttpClient client) {
+    public DataUpdateUtil(BudongsanInfoDAO dao, Gson gson, OkHttpClient client, DistrictCodeSet districtCodeSet) {
         this.dao = dao;
         this.gson = gson;
         this.client = client;
-        this.districtCodeSet = new HashSet<>();
+        this.districtCodeSet = districtCodeSet;
     }
 
     @PostConstruct
@@ -64,10 +56,13 @@ public class DataUpdateUtil {
 
         br.lines().forEach(s -> {
             String[] split = s.split("[\\t ]+");
+            if ("폐지".equals(split[split.length - 1])) return;
+
             String fullDistrictCode = split[0];
             String lawd_cd = fullDistrictCode.substring(0, 5);
+            String districtName = split[1] + " " + split[2];
 
-            districtCodeSet.add(lawd_cd);
+            districtCodeSet.add(new DistrictCode(districtName, lawd_cd));
         });
 
         br.close();
@@ -82,9 +77,11 @@ public class DataUpdateUtil {
         int month = Calendar.getInstance().get(Calendar.MONTH);
         String deal_ymd = String.format("%04d%02d", year, month);
 
-        for (String lawd_cd : districtCodeSet) {
-            log.debug("lawd_cd << "+lawd_cd);
-            log.debug("deal_ymd << "+deal_ymd);
+        for (DistrictCode dc : districtCodeSet) {
+            String lawd_cd = dc.getDistrictCode();
+
+            log.debug("lawd_cd << " + lawd_cd);
+            log.debug("deal_ymd << " + deal_ymd);
 
             String dataXML = getDataXML(lawd_cd, deal_ymd);
             JsonObject json = parseJson(dataXML);
@@ -93,7 +90,7 @@ public class DataUpdateUtil {
                 try {
                     List<BudongsanApartmentDealDTO> exportedData = exportItems(json);
 
-                    for(BudongsanApartmentDealDTO dto : exportedData) {
+                    for (BudongsanApartmentDealDTO dto : exportedData) {
                         dao.updateData(dto);
                     }
                 } catch (JsonSyntaxException e) {

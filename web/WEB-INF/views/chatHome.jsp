@@ -35,14 +35,20 @@
 </script>
 </head>
 <body>
+	<div>
+		아이디 : ${login.mem_id} <br> 이름 : ${login.mem_name } <br> 프로필
+		사진 : <img src="<c:url value='/resources/images/${login.mem_img}'/>" /><br>
+		거주 지역 : ${login.mem_region}
 
+
+
+	</div>
 	<div align="center">
 		<%
-			if (session.getAttribute("userId") != null) {
+			if (session.getAttribute("login") != null) {
 		%>
 		<input type="button" value="로그아웃" onClick="location.href='logout.do'" />
-		<c:set var="userId" value="${userId}" />
-		<c:set var="userImg" value="${userImg}" />
+		<c:set var="userId" value="${login.mem_id}" />
 
 		<!--로그인 팝업 모달  -->
 		<div class="modal">this is a modal pop up</div>
@@ -110,7 +116,7 @@
 				</ul>
 			</div>
 
-			
+
 			<!--채팅 컨테이너  -->
 			<div class="chat">
 				<!-- 채팅 헤더  -->
@@ -151,20 +157,29 @@
 
 
 	<script type="text/javascript">
-		/*웹 소켓 연결   */
-		var webSocket = new WebSocket('ws://localhost:8080/budong/chatting');
-		webSocket.onerror = function(event) {
-			onError(event)
-		};
+		var webSocket;
 
-		webSocket.onopen = function(event) {
-			onOpen(event)
-		};
+		function connectWebSocket() {			/*웹 소켓 연결 */
+			webSocket = new WebSocket('ws://localhost:8080/budong/chatting');
+			webSocket.onerror = function(event) {
+				onError(event)
+			};
 
-		webSocket.onmessage = function(event) {
-			onMessage(event)
-		};
+			webSocket.onopen = function(event) {
+				console.log(webSocket+"연결")
+				onOpen(event)
+			};
 
+			webSocket.onmessage = function(event) {
+				onMessage(event)
+			};
+			
+			webSocket.onclose=function(event) {
+				console.log(webSocket+"해제")
+				onClose(event)
+			}
+		} 
+		 
 		//상대방에게서 메시지 받음 
 		function onMessage(event) {
 			console.log(event.data);
@@ -173,15 +188,25 @@
 			var msg = JSON.parse(event.data);
 			var messagesContainer = $('.chat-history');
 
-			if (msg.id != "${userId}") {
-				messagesContainer
-						.append([
-								'<li> <div class="message-data"> <span class="message-data-name">',
-								msg.id,
-								'</span> <span class="message-data-time">',
-								msg.date,
-								'</span> </div> <div class="message other-message">',
-								msg.text, '</div> </li>' ].join(''));
+			if (msg.type == "msg") {
+				if (msg.id != "${login.mem_id}") { //일반메시지
+					messagesContainer
+							.append([
+									'<li> <div class="message-data"> <span class="message-data-name">',
+									msg.id,
+									'</span> <span class="message-data-time">',
+									msg.date,
+									'</span> </div> <div class="message other-message">',
+									msg.text, '</div> </li>' ].join(''));
+				}
+			} else if (msg.type == "enterMsg") { //입장 메시지 
+					messagesContainer.append([ '<li> <div class="message-data notice-message">', msg.id, '님이 ',
+							msg.roomName, '방에 입장하셨습니다. </li>' ].join(''));
+			}else if(msg.type == "exitMsg") { //퇴장 메시지 
+				if(msg.id !="${login.mem_id}") { //내화면에 출력하지 않음 
+					messagesContainer.append([ '<li>', msg.id, '님이 ',
+						msg.roomName, '방을 퇴장하셨습니다. </li>' ].join(''));
+				}
 			}
 
 			messagesContainer.finish().animate({
@@ -191,10 +216,14 @@
 		}
 
 		function onOpen(event) {
+			console.log(webSocket+"접속");
 		}
 
 		function onError(event) {
 			alert(event);
+		}
+
+		function onClose(event) {
 		}
 
 		//메시지 전송 
@@ -212,8 +241,8 @@
 			//아이디, 프로필이미지, 채팅내용, 방이름, 보낸시간을 JSON에 넣음 			
 			var d = new Date();
 			var msg = {
-				id : "${userId}",
-				img : "${userImg}",
+				type : "msg",
+				id : "${login.mem_id}",
 				text : newMessage,
 				roomName : $("[name='roomName']").val(),
 				date : d.toLocaleString()
@@ -240,9 +269,7 @@
 			webSocket.send(JSON.stringify(msg));
 			userInput.value = "";
 		}
-	</script>
 
-	<script>
 		var element = $('.floating-chat');
 
 		setTimeout(function() {
@@ -284,19 +311,18 @@
 			}, 500);
 		}
 
-		/*엔터키 전송 */
+		//엔터키 전송
 		function onMetaAndEnter(event) {
 			if (event.keyCode == 13) {
 				send();
 			}
 		}
-	</script>
 
-	<script>
+		//방 변경 
 		var room = $('.room-list li');
 		room.click(enterRoom);
 
-		/*방 들어가기 */
+		//방 입장 시 웹소켓 연결 한다. 
 		function enterRoom() {
 			var title = $('#header-title');
 			$("[name='roomName']").val($(this).text().trim()); //전송할 방이름 설정   
@@ -308,14 +334,17 @@
 				success : function(data) {
 					console.log(data);
 					title.text(data);
-					$('.chat-history').empty(); // 방 이동시 이전 대화기록 삭제 
+					connectWebSocket();//웹소켓 연결
+					$('.chat-history').empty(); // 방 이동시 이전 대화기록 삭제  
+
 				},
 				error : function(data) {
 					console.log("Server Error");
 				}
 			});
 		}
-
+		
+		
 		/*방 이름 검색 필터 */
 		(function() {
 			var searchFilter = {

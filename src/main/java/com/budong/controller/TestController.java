@@ -1,11 +1,13 @@
 package com.budong.controller;
 
-import java.util.List;
+import java.util.*;
 
-import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import com.budong.R;
+import com.budong.util.DistrictCode;
+import com.budong.util.DistrictCodeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.budong.model.dto.RealEstateAPTDealInfoDTO;
 import com.budong.service.TestServiceClass;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/test")
 public class TestController {
-    private static final Logger log = LoggerFactory.getLogger(TestController.class);
+	private static final Logger log = LoggerFactory.getLogger(TestController.class);
 
-    private final TestServiceClass testServiceClass;
+	private final TestServiceClass testServiceClass;
+
+    private final DistrictCodeSet districtCodeSet;
 
     @Autowired
-    public TestController(TestServiceClass testServiceClass) {
+    public TestController(TestServiceClass testServiceClass, DistrictCodeSet districtCodeSet) {
         this.testServiceClass = testServiceClass;
+        this.districtCodeSet = districtCodeSet;
     }
 
 
@@ -67,9 +73,16 @@ public class TestController {
     }
 
     @RequestMapping(R.mapping.graph_year_districtCode_avg)
-    public String goToTestGraphYearDistrict() {
-        return R.path.graph_year_districtCode_avg;
+    public ModelAndView goToTestGraphYearDistrict() {
+        List<DistrictCode> districtCodeList = new ArrayList<>(districtCodeSet);
+        districtCodeList.sort(Comparator.comparing(DistrictCode::getDistrictName));
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("districtCodeList",districtCodeList);
+
+        return new ModelAndView(R.path.graph_year_districtCode_avg, parameters);
     }
 
     /* graph test section end*/
+
 }
