@@ -23,12 +23,24 @@
 		    data : "param=" + param,
 		    dataType:'text',
 		    success:function(data){
-		 	   $("#test").html(data);
+		 	   $(".page").html(data);
 		    },error:function(){alert("Error");}
 		})
 		}
+		
+		function getContent(url){
+			var param = url;
+			   $.ajax({
+		           url:'/budong-info/content.news',
+		           data : "param=" + param,
+		           dataType:'text',
+		           success:function(data){
+		        	   $(".page").html(data);
+		           },error:function(){alert("Error");}
+		       })
+			}
 		 
-		function getContent(url, pos){
+		/*function getContent(url, pos){
 			var param = url;
 			var position = pos;
 			   $.ajax({
@@ -39,5 +51,5 @@
 		        	   $("#test").html(data);
 		           },error:function(){alert("Error");}
 		       })
-			}
+			}*/
 	

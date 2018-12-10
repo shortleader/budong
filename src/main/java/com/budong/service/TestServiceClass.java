@@ -1,6 +1,7 @@
 package com.budong.service;
 
 import java.util.List;
+import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,5 @@ public class TestServiceClass {
 	public List<RealEstateAPTDealInfoDTO> listAPTDeal(String lawd_cd, int deal_ymd) {
 		return realEasteDealInfoDAO.getAPTDealInfo(1, lawd_cd, deal_ymd);
 	}
-	
+
 }
