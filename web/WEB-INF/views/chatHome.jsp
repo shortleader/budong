@@ -201,11 +201,11 @@
 				}
 			} else if (msg.type == "enterMsg") { //입장 메시지 
 					messagesContainer.append([ '<li> <div class="message-data notice-message">', msg.id, '님이 ',
-							msg.roomName, '방에 입장하셨습니다. </li>' ].join(''));
+							msg.roomName, '방에 입장하셨습니다.</div> </li>' ].join(''));
 			}else if(msg.type == "exitMsg") { //퇴장 메시지 
 				if(msg.id !="${login.mem_id}") { //내화면에 출력하지 않음 
-					messagesContainer.append([ '<li>', msg.id, '님이 ',
-						msg.roomName, '방을 퇴장하셨습니다. </li>' ].join(''));
+					messagesContainer.append([ '<li>  <div class="message-data notice-message">', msg.id, '님이 ',
+						msg.roomName, '방을 퇴장하셨습니다. </div> </li>' ].join(''));
 				}
 			}
 
