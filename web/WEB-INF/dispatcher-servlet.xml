@@ -45,7 +45,7 @@
 
     <!-- 파일 업로드 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="1048576" /> <!-- 1 * 1024 * 1024 b -->
+        <property name="maxUploadSize" value="1048576"/> <!-- 1 * 1024 * 1024 b -->
     </bean>
 
     <!-- gson Object -->
