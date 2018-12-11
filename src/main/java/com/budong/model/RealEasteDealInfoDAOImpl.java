@@ -66,10 +66,10 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		
 		return nValue.getNodeValue();
 	}
-
+	
 	@Override
-	public List<RealEstateAPTDealInfoDTO> getAPTDealInfo(int pageNo, String lawd_cd, int deal_ymd) {
-		this.pageNo = pageNo;
+	public List<RealEstateAPTDealInfoDTO> getAPTDealInfo(String lawd_cd, int deal_ymd) {
+		this.pageNo = 1;
 		this.lawd_cd = lawd_cd;
 		this.deal_ymd = deal_ymd;
 		
@@ -93,7 +93,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 				
 				// item 뽑기
 				NodeList nList = doc.getElementsByTagName("item");
-				log.debug("nList : " + nList.getLength());
+				log.info("nList : " + nList.getLength());
 				for(int i=0; i<nList.getLength(); i++) {
 					Node node = nList.item(i);
 					
@@ -124,7 +124,7 @@ public class RealEasteDealInfoDAOImpl implements RealEsateDealInfoDAO{
 		
 		return dataSet;
 	}
-
+	
 	@Override
 	public void getAPTDealURL() {
 		url =	"http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade?"
