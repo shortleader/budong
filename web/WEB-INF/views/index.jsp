@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.budong.R" %><%--
   Created by IntelliJ IDEA.
   User: S401-28
   Date: 2018-11-08
@@ -12,11 +12,11 @@
 </head>
 <body>
 	메롱메롱
-	<a href="dealInfo/realEstate.do">김준영/ 아파트 매매정보 보기</a>
+	<a href="<%=R.requestToHost(R.controller.real_estate_deal_info, R.mapping.apartment_deal_info)%>">김준영/ 아파트 매매정보 보기</a>
 
 	<!--ljy-->
 	<div align="center">
-		<a href="chatHome.do">채팅 바로가기</a>
+		<a href="<%=R.requestToHost(R.mapping.chat_home)%>">채팅 바로가기</a>
 	</div>
 
 </body>

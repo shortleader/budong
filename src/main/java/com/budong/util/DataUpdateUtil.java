@@ -70,7 +70,7 @@ public class DataUpdateUtil {
         log.debug("DataUpdateUtil instance initalize complete.");
     }
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+    @Scheduled(cron = "0 0 1,13 * * *")
     public void updateSchedule() throws IOException {
         log.info("Start update Database.");
         int year = Calendar.getInstance().get(Calendar.YEAR);

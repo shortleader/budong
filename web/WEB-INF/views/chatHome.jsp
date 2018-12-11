@@ -161,7 +161,7 @@
 		var webSocket;
 
 		function connectWebSocket() {			/*웹 소켓 연결 */
-			webSocket = new WebSocket(<%=R.requestToHost("ws",R.mapping.request_web_socket)%>); <%-- ws://localhost:8080/budong/chatting --%>
+			webSocket = new WebSocket('<%=R.requestToHostWithScheme("ws",R.mapping.request_web_socket)%>'); <%-- ws://localhost:8080/budong/chatting --%>
 			webSocket.onerror = function(event) {
 				onError(event);
 			};

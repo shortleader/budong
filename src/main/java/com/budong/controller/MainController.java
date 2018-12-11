@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.budong.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +18,29 @@ import com.budong.service.NewsServiceImpl;
  * 일반 사용자
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping(R.controller.main)
 public class MainController {
     private final Logger log = LoggerFactory.getLogger(MainController.class);
 
-    @Autowired
-    private NewsServiceImpl newsService;
+    private final NewsServiceImpl newsService;
 
-    @RequestMapping("/")
-    public ModelAndView goToIndexPage() {
+    @Autowired
+    public MainController(NewsServiceImpl newsService) {
+        this.newsService = newsService;
+    }
+
+    @RequestMapping(R.mapping.INDEX)
+    public String goToMainIndex() {
+        return R.path.INDEX;
+    }
+
+    @RequestMapping(R.mapping.khw_main)
+    public ModelAndView goToKhwIndexPage() {
         Date today = new Date();
         SimpleDateFormat date = new SimpleDateFormat("yyyyMMdd");
         String param = date.format(today);
 
-        ModelAndView mav = new ModelAndView("khw/main");
+        ModelAndView mav = new ModelAndView(R.path.khw_main);
         String url = "https://land.naver.com/news/headline.nhn?bss_ymd=" + param;
         ArrayList<NewsDTO> list = newsService.getTitle(url);
 
