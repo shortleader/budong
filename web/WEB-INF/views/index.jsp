@@ -12,7 +12,7 @@
 </head>
 <body>
 	메롱메롱
-	<a href="test/realState.do">이동</a>
+	<a href="dealInfo/realEstate.do">김준영/ 아파트 매매정보 보기</a>
 
 	<!--ljy-->
 	<div align="center">
