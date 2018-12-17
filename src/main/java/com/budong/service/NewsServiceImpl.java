@@ -18,7 +18,7 @@ import com.budong.service.interfaces.NewsService;
 public class NewsServiceImpl implements NewsService {
 
 	private static final Logger log = LoggerFactory.getLogger(NewsServiceImpl.class);
-	private String naverUrl = "https://land.naver.com";
+	private static final String naverUrl = "https://land.naver.com";
 
 	// https://land.naver.com/news/headline.nhn -> 네이버 부동산 뉴스 main page
 	@Override
